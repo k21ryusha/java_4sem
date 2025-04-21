@@ -1,18 +1,9 @@
 package laba_1.model.Units;
 
+import laba_1.model.Player;
+
 public class Crossbowman extends Unit {
-    public Crossbowman(int x, int y) {
-        super(2, 80, 15, 1, x, y);
-    }
-
-    @Override
-    public void move(int newX, int newY) {
-        setX(newX);
-        setY(newY);
-    }
-
-    @Override
-    public void attack(Unit enemy) {
-        enemy.setHp(enemy.getHp() - getDamage());
+    public Crossbowman(Player owner) {
+        super("Арбалетчик", 2, 110, 55, 1, 0, 0, 125, owner, 500);
     }
 }

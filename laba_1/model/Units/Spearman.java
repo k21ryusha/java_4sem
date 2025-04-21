@@ -1,18 +1,9 @@
 package laba_1.model.Units;
 
+import laba_1.model.Player;
+
 public class Spearman extends Unit {
-    public Spearman(int x, int y) {
-        super(1, 100, 10, 1, x, y); // пример значений
-    }
-
-    @Override
-    public void move(int newX, int newY) {
-        setX(newX);
-        setY(newY);
-    }
-
-    @Override
-    public void attack(Unit enemy) {
-        enemy.setHp(enemy.getHp() - getDamage());
+    public Spearman(Player owner) {
+        super("Копейщик", 1, 100, 50, 1, 0, 0, 100, owner, 250); // пример значений
     }
 }

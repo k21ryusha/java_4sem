@@ -1,7 +1,7 @@
 package laba_1.model.Buildings;
 
 public class Tavern extends Building {
-    public Tavern(int cost) {
-        super(cost, "Tavern");
+    public Tavern() {
+        super(150, "Tavern");
     }
 }
