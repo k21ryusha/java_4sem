@@ -1,6 +1,5 @@
 package laba_1.game;
 
-import laba_1.MapController.BattleMap;
 import laba_1.MapController.Map;
 import laba_1.battle.Battle;
 import laba_1.model.Buildings.*;
@@ -30,6 +29,14 @@ public class Game {
         this.map = map;
         console.initializeMap(map);
         init();
+    }
+
+    public static boolean isGameOver() {
+        return isGameOver;
+    }
+
+    public static void setGameOver(boolean gameOver) {
+        Game.isGameOver = gameOver;
     }
 
     public void init() {
@@ -68,7 +75,7 @@ public class Game {
                         enterCastle();
                         break;
                     case 2:
-                        playerController.moveHero();
+                        playerController.moveHero(scanner);
                         break;
                     case 3:
                         turnEnded = true;
@@ -92,8 +99,12 @@ public class Game {
     }
 
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
+    public Player getBot() {
+        return this.bot;
+    }
+
 
     public void endTurn() {
         System.out.println("Ход завершен. Передача управления боту...");
@@ -146,7 +157,6 @@ public class Game {
                 ++i;
                 System.out.println(i + " " + unit.getName());
             }
-
 
             System.out.print("Ваш выбор: ");
             int choice = scanner.nextInt();
@@ -402,27 +412,42 @@ public class Game {
         }
     }
 
-    private void checkVictoryConditions() {
+    public void checkVictoryConditions() {
         if (isPlayerDefeated(player)) {
             System.out.println("Вы проиграли! У вас нет ни юнитов, ни золота.");
             isGameOver = true;
             scanner.close();
         }
+        else if (isPlayerDefeated(bot)){
+            endGameFor(bot);
+        }
     }
 
     private boolean isPlayerDefeated(Player p) {
-        return (p.getHero().getArmy() == null && p.getGold() < 100) || (p.getHero() == null && p.getGold() < 700);
+            if (p.getHero() == null) {
+                return p.getGold() < 700; // Не может нанять героя
+            } else {
+                return (p.getHero().getArmy() == null || p.getHero().getArmy().isEmpty()) && p.getGold() < 100;
+            }
     }
 
 
     public void endGameFor(Player defeatedPlayer) {
-        isGameOver = true;
-        if (defeatedPlayer == player) {
-            System.out.println("Вы проиграли! Игра окончена.");
-            endGame(false);
+        if (defeatedPlayer.getCastle() == null) {
+            isGameOver = true;
+            if (defeatedPlayer == player) {
+                System.out.println("Вы проиграли! Игра окончена.");
+                endGame(false);
+            } else {
+                System.out.println("Поздравляем! Вы победили.");
+                endGame(true);
+            }
         } else {
-            System.out.println("Поздравляем! Вы победили.");
-            endGame(true);
+            if (defeatedPlayer == player) {
+                System.out.println("Вы проиграли битву! Ваши юниты уничтожены.");
+            } else {
+                System.out.println("Вы победили в битве! Юниты противника уничтожены.");
+            }
         }
     }
 
@@ -439,29 +464,39 @@ public class Game {
     }
 
 
-    private void checkHeroEncounter() {
+    public void checkHeroEncounter() {
+        if (isGameOver) return;
+
+        // Проверяем базовые условия
+        if (player.getCastle() == null && player.getHero() == null) {
+            endGame(false); // Игрок проиграл
+            return;
+        }
+        if (bot.getCastle() == null && bot.getHero() == null) {
+            endGame(true); // Бот проиграл
+            return;
+        }
+
         Hero playerHero = player.getHero();
         Hero botHero = bot.getHero();
 
-        if (player.getCastle() == null || bot.getCastle() == null) {
-            System.out.println("Один из замков разрушен - битва не нужна!");
-            endGame(player.getCastle() != null);
-            return;
+        // Если у кого-то нет героя - не проверяем встречи
+        if (playerHero == null || botHero == null) return;
+
+        // Проверка финальной битвы (атака на замок)
+        if (isAdjacentEnemyCastle(playerHero, botHero)) {
+            battle.startFinalBattle();
+            return; // Важно: выходим после битвы
         }
-        if (playerHero != null && botHero != null) {
-            Castle botCastle = bot.getCastle();
-            if (botCastle != null && isAdjacentEnemyCastle(playerHero, botHero)) {
-                System.out.println("Герой противника защищает свой замок!");
-                battle.startFinalBattle();
-            }
-            if (player.getCastle() != null && isAdjacentEnemyCastle(botHero, playerHero)) {
-                System.out.println("Вам предстоит защитить свой замок!");
-                battle.startFinalBattle();
-            }
-            if (isAdjacent(playerHero, botHero)) {
-                    Battle battle = new Battle(player, bot, console, map, this);
-                    battle.startBattle();
-            }
+
+        if (isAdjacentEnemyCastle(botHero, playerHero)) {
+            battle.startFinalBattle();
+            return; // Важно: выходим после битвы
+        }
+
+        // Обычная битва героев
+        if (isAdjacent(playerHero, botHero)) {
+            battle.startBattle();
         }
     }
     public void checkDiscontent() {
@@ -476,17 +511,17 @@ public class Game {
     }
 
         public void endGame(boolean playerWon) {
-            isGameOver = true;
-            if (playerWon) {
-                System.out.println("\n=================================");
-                System.out.println("=== ПОЗДРАВЛЯЕМ С ПОБЕДОЙ! ===");
-                System.out.println("=================================");
-            } else {
-                System.out.println("\n=================================");
-                System.out.println("=== ИГРА ОКОНЧЕНА. ВЫ ПРОИГРАЛИ ===");
-                System.out.println("=================================");
+            if (isGameOver) {
+                if (playerWon) {
+                    System.out.println("\n=================================");
+                    System.out.println("=== ПОЗДРАВЛЯЕМ С ПОБЕДОЙ! ===");
+                    System.out.println("=================================");
+                } else {
+                    System.out.println("\n=================================");
+                    System.out.println("=== ИГРА ОКОНЧЕНА. ВЫ ПРОИГРАЛИ ===");
+                    System.out.println("=================================");
+                }
+                scanner.close();
             }
-            scanner.close();
-            System.exit(0);
         }
     }

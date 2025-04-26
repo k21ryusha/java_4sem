@@ -11,8 +11,6 @@ public class Hero {
     private int x;
     private int y;
     private Player owner;
-    private int hp = 500;
-    private int damage = 100;
     public List<Unit> dead_army;
     public List<Unit> revive_army;
     public List<Unit> sacked_army;
@@ -64,7 +62,10 @@ public class Hero {
     }
 
     public void addUnit(Unit unit) {
-        this.army.add(unit);
+        if (army == null) {
+            army = new ArrayList<>(); // Ленивая инициализация
+        }
+        army.add(unit);
     }
 
 

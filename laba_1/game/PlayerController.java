@@ -28,7 +28,7 @@ public class PlayerController {
         this.scanner = new Scanner(System.in);
     }
 
-    public void moveHero() {
+    public void moveHero(Scanner scanner) {
         if (player.getHero() == null) {
             System.out.println("У вас нет героя! Сначала купите его.");
             return;
@@ -127,6 +127,7 @@ public class PlayerController {
                         return;
                     }else{
                         revive();
+                        return;
                     }
                 }
             }
@@ -139,20 +140,22 @@ public class PlayerController {
         int lucky = new Random().nextInt(2);
         if (lucky == 0) {
             System.out.println("Увы, вам не повезло, приходите в следующий раз!.");
-        }else if (lucky == 1) {
+            return;
+        } else if (lucky == 1) {
             System.out.println("Удача сегодня на вашей стороне. Некромант вылез из озера, а вот сможет он вам помочь или не сможет, решит монетка. " +
                     "\nОрел - воскресит, Решка - не воскресит");
             int lucky1 = new Random().nextInt(2);
             if (lucky1 == 0) {
                 System.out.println("Выпала решка, увы, вам не повезло, приходите в следующий раз!.");
-            }else if (lucky1 == 1) {
-                System.out.println("Удача сегодня на вашей стороне. Некромант воскресил 1 вашего юнита.");
-                for(Unit unit : player.getHero().getDeadArmy()){
-                    player.getHero().getDeadArmy().remove(unit);
-                    player.getHero().addReviveUnit(unit);
-                    player.getHero().addUnit(unit);
-                    break;
-                }
+                return;
+            }
+
+            System.out.println("Удача сегодня на вашей стороне. Некромант воскресил 1 вашего юнита.");
+            for (Unit unit : player.getHero().getDeadArmy()) {
+                player.getHero().getDeadArmy().remove(unit);
+                player.getHero().addReviveUnit(unit);
+                player.getHero().addUnit(unit);
+                break;
             }
         }
     }

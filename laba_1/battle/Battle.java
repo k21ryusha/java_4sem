@@ -8,7 +8,6 @@ import laba_1.model.Hero;
 import laba_1.model.Player;
 import laba_1.model.Tile;
 import laba_1.model.Units.Unit;
-import laba_1.util.Constants;
 import laba_1.view.Console;
 
 import java.util.Scanner;
@@ -16,13 +15,12 @@ import java.util.Scanner;
 public class Battle {
     private final Player player;
     private final Player bot;
-    private final BattleMap bmap;
+    public BattleMap bmap;
     private final Console console;
-    private final Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
     private Game game;
     private Map map;
     private boolean isFinalBattle = false;
-    private Hero hero;
 
     public Battle(Player player, Player bot, Console console, Map map, Game game) {
         this.player = player;
@@ -37,13 +35,13 @@ public class Battle {
         this.isFinalBattle = isFinalBattle;
     }
 
-    private boolean isInRange(Unit attacker, Unit target) {
+    public boolean isInRange(Unit attacker, Unit target) {
         int dx = Math.abs(attacker.getX() - target.getX());
         int dy = Math.abs(attacker.getY() - target.getY());
         return dx <= attacker.getMovement() && dy <= attacker.getMovement();
     }
 
-    private void attackUnit(Unit attacker, Unit defender, Tile defenderTile) {
+    public void attackUnit(Unit attacker, Unit defender, Tile defenderTile) {
         System.out.println(attacker.getName() + "( " + attacker.getOwner().getName() + " )" + " (HP: " + attacker.getHp() + ") атакует " +
                 defender.getName() + "( " + defender.getOwner().getName() + " )"+ " (HP: " + defender.getHp() + ")");
         defender.setHp(defender.getHp() - attacker.getDamage());
@@ -68,15 +66,17 @@ public class Battle {
             System.out.println("Вы не закупили армию, хотя у вас была такая возможность....");
             endFinalBattle();
         }
-        bmap.initializeBattleMap(player, bot);
-        Battle finalBattle = new Battle(player, bot, console, bmap,game);
-        finalBattle.setFinalBattle(true);
+        else {
+            bmap.initializeBattleMap(player, bot);
+            Battle finalBattle = new Battle(player, bot, console, bmap, game);
+            finalBattle.setFinalBattle(true);
 
-        while (!isFinalBattleFinished()) {
-            playerTurn();
-            if (isFinalBattleFinished()) endFinalBattle();
-            botTurn();
-            if (isFinalBattleFinished()) endFinalBattle();
+            while (!isFinalBattleFinished()) {
+                playerTurn();
+                if (isFinalBattleFinished()) endFinalBattle();
+                botTurn();
+                if (isFinalBattleFinished()) endFinalBattle();
+            }
         }
     }
 
@@ -87,7 +87,7 @@ public class Battle {
         checkDefeat(bot);
         if(player.getHero().getArmy() == null || bot.getHero().getArmy() == null) {
             System.out.println("Вы не закупили армию, хотя у вас была такая возможность....");
-            game.endGameFor(player);
+            game.endGame(false);
         }
         while (!isBattleFinished()) {
             playerTurn();
@@ -97,9 +97,10 @@ public class Battle {
         }
 
         endBattle();
+
     }
 
-    private void playerTurn() {
+    public void playerTurn() {
         bmap.displayBattleMap(bot, player);
         System.out.println("Выберите юнита для перемещения (введите координаты x y):");
         int x = scanner.nextInt();
@@ -249,7 +250,7 @@ public class Battle {
         }
     }
 
-    private boolean isBattleFinished() {
+    public boolean isBattleFinished() {
         boolean playerHasUnits = false;
         boolean botHasUnits = false;
 
@@ -319,14 +320,18 @@ public class Battle {
     }
 
     private void endFinalBattle() {
-        if (bot.getHero().getArmy() == null) {
+        if (bot.getHero().getArmy().isEmpty()) {
             System.out.println("\n=== ВАША ПОБЕДА ===");
             System.out.println("Вы захватили замок противника и победили в игре!");
-            game.endGame(true);
+            bot.setCastle(null);
+            bot.setHero(null);
+            game.endGameFor(bot);
         } else {
             System.out.println("\n=== ВАШЕ ПОРАЖЕНИЕ ===");
             System.out.println("Ваш герой пал в финальной битве...");
-            game.endGame(false);
+            player.setCastle(null);
+            player.setHero(null);
+            game.endGameFor(player);
         }
     }
 
@@ -356,6 +361,14 @@ public class Battle {
     }
     private void endBattle () {
         System.out.println("Битва завершена.");
+    }
+
+    public Scanner getScanner() {
+        return scanner;
+    }
+
+    public void setScanner(Scanner testScanner) {
+        this.scanner = testScanner;
     }
 }
 

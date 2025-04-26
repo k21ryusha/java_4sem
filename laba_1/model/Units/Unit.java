@@ -78,4 +78,16 @@ public String getName() {
     public int getReward() {
         return reward;
     }
+
+    public void setMovement(int i) {
+        this.movement = i;
+    }
+
+    public void setDamage(int i) {
+        this.damage = i;
+    }
+
+    public void setReward(int i) {
+        this.reward = i;
+    }
 }

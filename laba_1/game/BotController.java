@@ -46,7 +46,7 @@ public class BotController {
     }
 
 
-    private void moveUnitsTowards(Player player) {
+    public void moveUnitsTowards(Player player) {
         Castle botCastle = bot.getCastle();
         Hero botHero = bot.getHero();
         if (botHero != null && botCastle != null) {
@@ -133,7 +133,7 @@ public class BotController {
         }
     }
 
-    private void purchaseHero() {
+    public void purchaseHero() {
         int cost = 700;
         if (bot.getGold() < cost) {
             System.out.println("Bot не имеет достаточного золота для найма героя.");
@@ -186,24 +186,26 @@ public class BotController {
         return false;
     }
     public void revive() {
-        System.out.println("У боту появилась возможность воскресить погибшего юнита! Данный обряд может совершить только некромант сидящий на дне озера.");
-        System.out.println("Сейчас мы узнаем, захочет ли он боту помочь.");
-        int lucky = new Random().nextInt(2);
-        if (lucky == 0) {
-            System.out.println("Увы, боту не повезло!");
-        } else if (lucky== 1) {
-            System.out.println("Удача сегодня на его стороне. Некромант вылез из озера, а вот сможет он ему помочь или не сможет, решит монетка. " +
-                    "\nОрел - воскресит, Решка - не воскресит");
-            int lucky1 = new Random().nextInt(2);
-            if (lucky1 == 0) {
-                System.out.println("Выпала решка, увы, боту не повезло!");
-            } else if (lucky1 == 1) {
-                System.out.println("Удача сегодня на его стороне. Некромант воскресил 1 юнита бота .");
-                for (Unit unit : bot.getHero().getDeadArmy()) {
-                    bot.getHero().getDeadArmy().remove(unit);
-                    bot.getHero().addReviveUnit(unit);
-                    bot.getHero().addUnit(unit);
-                    break;
+        if (canRevive()) {
+            System.out.println("У боту появилась возможность воскресить погибшего юнита! Данный обряд может совершить только некромант сидящий на дне озера.");
+            System.out.println("Сейчас мы узнаем, захочет ли он боту помочь.");
+            int lucky = new Random().nextInt(2);
+            if (lucky == 0) {
+                System.out.println("Увы, боту не повезло!");
+            } else if (lucky == 1) {
+                System.out.println("Удача сегодня на его стороне. Некромант вылез из озера, а вот сможет он ему помочь или не сможет, решит монетка. " +
+                        "\nОрел - воскресит, Решка - не воскресит");
+                int lucky1 = new Random().nextInt(2);
+                if (lucky1 == 0) {
+                    System.out.println("Выпала решка, увы, боту не повезло!");
+                } else if (lucky1 == 1) {
+                    System.out.println("Удача сегодня на его стороне. Некромант воскресил 1 юнита бота .");
+                    for (Unit unit : bot.getHero().getDeadArmy()) {
+                        bot.getHero().getDeadArmy().remove(unit);
+                        bot.getHero().addReviveUnit(unit);
+                        bot.getHero().addUnit(unit);
+                        break;
+                    }
                 }
             }
         }
