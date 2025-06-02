@@ -2,7 +2,7 @@ package test;
 
 import laba_1.MapController.BattleMap;
 import laba_1.model.*;
-import laba_1.model.Units.*;
+import laba_1.model.units.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +19,7 @@ class BattleMapDisplayTest {
 
         @BeforeEach
         void setUp() {
+
             battleMap = new BattleMap(8, 8);
             player = new Player("Player", 1000);
             bot = new Player("Bot", 1000);
@@ -37,7 +38,7 @@ class BattleMapDisplayTest {
             String output = outputStream.toString();
 
             long dotCount = output.chars().filter(ch -> ch == '・').count();
-            assertEquals(battleMap.getX() * battleMap.getY(), dotCount,
+            assertEquals(battleMap.getWidth() * battleMap.getHeight(), dotCount,
                     "Пустая карта должна содержать только точки");
         }
 
@@ -73,7 +74,7 @@ class BattleMapDisplayTest {
         }
 
         @Test
-        void displayBattleMap_mixedUnits_shouldCorrectlyDisplay() {
+        void КdisplayBattleMap_mixedUnits_shouldCorrectlyDisplay() {
             player.getHero().addUnit(new Paladin(player));
             bot.getHero().addUnit(new Crossbowman(bot));
             battleMap.initializeBattleMap(player, bot);

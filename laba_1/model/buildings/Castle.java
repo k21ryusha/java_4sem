@@ -1,17 +1,25 @@
-package laba_1.model.Buildings;
+package laba_1.model.buildings;
 
+import com.google.gson.annotations.Expose;
+import laba_1.model.Occupant;
 import laba_1.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Castle {
-    private Player owner;
-    private int x;
-    private int y;
-    private List<Building> buildings;
-    private float discontent;
+public class Castle implements Occupant {
+    private transient Player owner;
+    @Expose
+    public int x;
+    @Expose
+    public int y;
+    @Expose
+    public List<Building> buildings;
+    @Expose
+    public float discontent;
+
+    public Castle() {}
 
     public Castle(Player owner, int x, int y) {
         this.owner = owner;
@@ -36,6 +44,16 @@ public class Castle {
 
     public int getY() {
         return y;
+    }
+
+    @Override
+    public void setX(int x) {
+
+    }
+
+    @Override
+    public void setY(int y) {
+
     }
 
     public List<Building> getBuildings() {
@@ -63,5 +81,9 @@ public class Castle {
     }
     public void setDiscontent(float discontent) {
         this.discontent = discontent;
+    }
+
+    public String getOwnerName() {
+        return owner.getName();
     }
 }

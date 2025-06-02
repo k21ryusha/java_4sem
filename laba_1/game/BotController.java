@@ -1,16 +1,12 @@
 package laba_1.game;
 
 import laba_1.MapController.Map;
-import laba_1.model.Buildings.*;
-import laba_1.model.Hero;
-import laba_1.model.Player;
-import laba_1.model.TerrainType;
-import laba_1.model.Tile;
-import laba_1.model.Units.*;
+import laba_1.model.*;
+import laba_1.model.buildings.*;
+import laba_1.model.units.*;
 import laba_1.util.Constants;
 import laba_1.util.MovementCalculator;
 import laba_1.view.Console;
-import laba_1.battle.*;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -70,6 +66,18 @@ public class BotController {
             Tile newTile = map.getTiles()[newX][newY];
             if (newTile.getOccupant() != null) {
                 System.out.println("Bot hero не может переместиться, клетка занята.");
+                return;
+            }
+            if (newTile.getTerrainType() == TerrainType.LAKE) {
+                System.out.println("Бот наступил на озеро!");
+                return;
+            }
+            if(newTile.getObstacle() == ObstacleType.IMPASSABLE){
+                System.out.println("Перед Ботом препятствие! Прохода нет!");
+                return;
+            }
+            if(newTile.getObstacle() == ObstacleType.PENALTY_BLOCK){
+                System.out.println("Перед ботом препятствие со штрафом! Прохода нет! Его штраф: " + MovementCalculator.calculatePenalty(newTile));
                 return;
             }
             map.getTiles()[currentX][currentY].setOccupant(null);

@@ -1,14 +1,13 @@
 package laba_1.game;
 
 import laba_1.MapController.Map;
-import laba_1.model.Hero;
-import laba_1.model.Player;
-import laba_1.model.TerrainType;
-import laba_1.model.Tile;
-import laba_1.model.Units.Unit;
+import laba_1.model.*;
+import laba_1.model.buildings.Cafe;
+import laba_1.model.units.Unit;
 import laba_1.util.Constants;
 import laba_1.util.MovementCalculator;
 import laba_1.view.Console;
+import logs.GameLogger;
 
 import java.util.Random;
 
@@ -20,91 +19,107 @@ public class PlayerController {
     private final Player player;
     private final Console console;
     private final Map map;
+    private final Game game;
 
-    public PlayerController(Player player, Map map, Console console) {
+    public PlayerController(Player player, Map map, Console console,Game game) {
         this.player = player;
         this.map = map;
         this.console = console;
+        this.game = game;
         this.scanner = new Scanner(System.in);
     }
 
     public void moveHero(Scanner scanner) {
-        if (player.getHero() == null) {
-            System.out.println("У вас нет героя! Сначала купите его.");
-            return;
-        }
-        Hero hero = player.getHero();
-        System.out.println("Текущая позиция героя: (" + hero.getX() + ", " + hero.getY() + ")");
-        System.out.println("Выберите направление:");
-        System.out.println("1 - вверх, 2 - вниз, 3 - влево, 4 - вправо, 5 - вправо и вниз, 6 - влево и вниз, " +
-                "7 - вправо и вверх, 8 - влево и вверх");
-        System.out.print("Ваш выбор: ");
-
-        String direction = scanner.next().toUpperCase();
-        int newX = hero.getX();
-        int newY = hero.getY();
-
-        switch (direction) {
-            case "1":
-                newY--;
-                break;
-            case "2":
-                newY++;
-                break;
-            case "3":
-                newX--;
-                break;
-            case "4":
-                newX++;
-                break;
-            case "5":
-                newX++;
-                newY++;
-                break;
-            case "6":
-                newX--;
-                newY++;
-                break;
-            case "7":
-                newX++;
-                newY--;
-                break;
-            case "8":
-                newX--;
-                newY--;
-                break;
-            default:
-                System.out.println("Некорректный ввод! Используйте 1, 2, 3, 4, 5, 6, 7, 8.");
+        try {
+            if (player.getHero() == null) {
+                System.out.println("У вас нет героя! Сначала купите его.");
                 return;
+            }
+            Hero hero = player.getHero();
+            System.out.println("Текущая позиция героя: (" + hero.getX() + ", " + hero.getY() + ")");
+            System.out.println("Выберите направление:");
+            System.out.println("1 - вверх, 2 - вниз, 3 - влево, 4 - вправо, 5 - вправо и вниз, 6 - влево и вниз, " +
+                    "7 - вправо и вверх, 8 - влево и вверх");
+            System.out.print("Ваш выбор: ");
+
+            String direction = scanner.next().toUpperCase();
+            int newX = hero.getX();
+            int newY = hero.getY();
+
+            switch (direction) {
+                case "1":
+                    newY--;
+                    break;
+                case "2":
+                    newY++;
+                    break;
+                case "3":
+                    newX--;
+                    break;
+                case "4":
+                    newX++;
+                    break;
+                case "5":
+                    newX++;
+                    newY++;
+                    break;
+                case "6":
+                    newX--;
+                    newY++;
+                    break;
+                case "7":
+                    newX++;
+                    newY--;
+                    break;
+                case "8":
+                    newX--;
+                    newY--;
+                    break;
+                default:
+                    System.out.println("Некорректный ввод! Используйте 1, 2, 3, 4, 5, 6, 7, 8.");
+                    return;
+            }
+
+            // Проверяем, находится ли новое положение в пределах карты
+            if (newX < 0 || newX >= Constants.MAP_WIDTH || newY < 0 || newY >= Constants.MAP_HEIGHT) {
+                System.out.println("Герой не может выйти за границы карты!");
+                return;
+            }
+
+            Tile newTile = map.getTiles()[newX][newY];
+            if (newTile.getOccupant() != null) {
+                System.out.println("На этой клетке уже находится объект! Выберите другое направление.");
+                return;
+            }
+            if (newTile.getTerrainType() == TerrainType.LAKE) {
+                System.out.println("Нельзя ходить по озеру!");
+                return;
+            }
+            if(newTile.getObstacle() == ObstacleType.IMPASSABLE){
+                System.out.println("Препятствие! Прохода нет!");
+                return;
+            }
+            if(newTile.getObstacle() == ObstacleType.PENALTY_BLOCK){
+                System.out.println("Препятствие со штрафом! Прохода нет! Ваш штраф: " + MovementCalculator.calculatePenalty(newTile));
+                return;
+            }
+
+            map.getTiles()[hero.getX()][hero.getY()].setOccupant(null);
+            hero.setX(newX);
+            hero.setY(newY);
+            newTile.setOccupant(hero);
+            canRevive();
+            game.checkCafeProximity();
+
+            int penalty = MovementCalculator.calculatePenalty(newTile);
+            player.setGold(player.getGold() - penalty);
+
+            System.out.println("Герой переместился в (" + newX + ", " + newY + "). Штраф: " + penalty + " золота.");
+            balance();
         }
-
-        // Проверяем, находится ли новое положение в пределах карты
-        if (newX < 0 || newX >= Constants.MAP_WIDTH || newY < 0 || newY >= Constants.MAP_HEIGHT) {
-            System.out.println("Герой не может выйти за границы карты!");
-            return;
+        catch (Exception e) {
+            e.printStackTrace();
         }
-
-        Tile newTile = map.getTiles()[newX][newY];
-        if (newTile.getOccupant() != null) {
-            System.out.println("На этой клетке уже находится объект! Выберите другое направление.");
-            return;
-        }
-        if(newTile.getTerrainType() == TerrainType.LAKE) {
-            System.out.println("Нельзя ходить по озеру!");
-            return;
-        }
-
-        map.getTiles()[hero.getX()][hero.getY()].setOccupant(null);
-        hero.setX(newX);
-        hero.setY(newY);
-        newTile.setOccupant(hero);
-        canRevive();
-
-        int penalty = MovementCalculator.calculatePenalty(newTile);
-        player.setGold(player.getGold() - penalty);
-
-        System.out.println("Герой переместился в (" + newX + ", " + newY + "). Штраф: " + penalty + " золота.");
-        balance();
     }
 
     public void balance() {
@@ -124,6 +139,7 @@ public class PlayerController {
                 if (tile.getTerrainType() == TerrainType.LAKE) {
                     if ((player.getHero().getDeadArmy() == null || player.getHero().getDeadArmy().isEmpty()) ) {
                         System.out.println("Вам некого воскрешать!");
+                        GameLogger.logWarning("Пользователь попытался воскресить юнита, хотя у него нет умерших юнитов");
                         return;
                     }else{
                         revive();
@@ -155,8 +171,12 @@ public class PlayerController {
                 player.getHero().getDeadArmy().remove(unit);
                 player.getHero().addReviveUnit(unit);
                 player.getHero().addUnit(unit);
+                if (game != null) {
+                    game.incrementResurrectedUnits();
+                }
                 break;
             }
         }
     }
+
 }

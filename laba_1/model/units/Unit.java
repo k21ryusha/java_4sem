@@ -1,18 +1,27 @@
-package laba_1.model.Units;
+package laba_1.model.units;
 
+import com.google.gson.annotations.Expose;
+import laba_1.model.Occupant;
 import laba_1.model.Player;
 
-public abstract class Unit {
-    private String name;
-    private int level;
-    private int hp;
-    private int damage;
-    private int movement;
-    private int x;
-    private int y;
-    private int cost;
-    private Player owner;
-    private int reward;
+public abstract class Unit{
+    @Expose
+    public String name;
+    @Expose
+    public int level;
+    @Expose
+    public int hp;
+    @Expose
+    public int damage;
+    @Expose
+    public int movement;
+    @Expose
+    public int x;
+    @Expose
+    public int y;
+    public int cost;
+    protected transient Player owner;
+    public int reward;
 
     public Unit(String name,int level, int hp, int damage, int movement, int x, int y, int cost, Player owner, int reward) {
         this.level = level;
@@ -27,7 +36,6 @@ public abstract class Unit {
         this.reward = reward;
     }
 
-    // Геттеры и сеттеры
 
 public String getName() {
         return name;
@@ -70,6 +78,10 @@ public String getName() {
 
     public Player getOwner() {
         return owner;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
 
     public boolean isAlive() {

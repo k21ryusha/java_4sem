@@ -1,5 +1,6 @@
 package laba_1.util;
 
+import laba_1.model.ObstacleType;
 import laba_1.model.TerrainType;
 import laba_1.model.Tile;
 
@@ -13,6 +14,10 @@ public class MovementCalculator {
             return Constants.PLAYER_ZONE_PENALTY;
         } else if (tile.getTerrainType() == TerrainType.BOT_ZONE) {
             return Constants.OPPONENTS_ZONE_PENALTY;
+        } else if (tile.getObstacle() == ObstacleType.WITH_PENALTY){
+            return Constants.WITH_PENALTY_OBSTACLE;
+        } else if (tile.getObstacle() == ObstacleType.PENALTY_BLOCK){
+            return Constants.PENALTY_BLOCK_OBSTACLE;
         }
         return 0;
     }

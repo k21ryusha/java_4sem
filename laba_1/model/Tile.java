@@ -1,10 +1,15 @@
 package laba_1.model;
 
 public class Tile {
-    private int x;
-    private int y;
-    private TerrainType terrainType;
-    private Object occupant; // Может быть Unit, Castle и т.д.
+    public int x;
+    public int y;
+    public TerrainType terrainType;
+    private Occupant occupant;
+    private ObstacleType obstacle = ObstacleType.NONE;
+    private String obstacleSymbol = "";
+
+
+    public Tile(){}
 
     public Tile(int x, int y, TerrainType terrainType) {
         this.x = x;
@@ -33,6 +38,25 @@ public class Tile {
     }
 
     public void setOccupant(Object occupant) {
-        this.occupant = occupant;
+        this.occupant = (Occupant) occupant;
+    }
+
+    public ObstacleType getObstacle() {
+        return obstacle;
+    }
+
+    public void setObstacle(ObstacleType obstacle) {
+        this.obstacle = obstacle;
+        if (obstacle == ObstacleType.NONE) {
+            this.obstacleSymbol = "";
+        }
+    }
+
+    public String getObstacleSymbol() {
+        return obstacleSymbol;
+    }
+
+    public void setObstacleSymbol(String obstacleSymbol) {
+        this.obstacleSymbol = obstacleSymbol;
     }
 }

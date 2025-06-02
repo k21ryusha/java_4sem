@@ -1,4 +1,4 @@
-package laba_1.model.Units;
+package laba_1.model.units;
 
 import laba_1.model.Player;
 

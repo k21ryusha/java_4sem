@@ -1,8 +1,9 @@
-package laba_1.model.Buildings;
+package laba_1.model.buildings;
 
-public abstract class Building {
-    private int cost;
-    private String name;
+
+public abstract class Building{
+    public int cost;
+    public String name;
 
     public Building(int cost, String name) {
         this.cost = cost;

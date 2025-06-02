@@ -3,7 +3,7 @@ package test;
 import laba_1.MapController.Map;
 import laba_1.game.BotController;
 import laba_1.model.*;
-import laba_1.model.Buildings.*;
+import laba_1.model.buildings.*;
 import laba_1.util.Constants;
 import laba_1.view.Console;
 import org.junit.jupiter.api.BeforeEach;

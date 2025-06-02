@@ -1,12 +1,20 @@
 package laba_1.model;
 
-import laba_1.model.Buildings.Castle;
+import com.google.gson.annotations.Expose;
+import laba_1.model.buildings.Castle;
 
 public class Player {
-    private String name;
-    private Hero hero;
+    @Expose
+    public String name;
+    @Expose
+    public Hero hero;
+    @Expose
     private Castle castle;
-    private int gold;
+    @Expose
+    public int gold;
+
+    public Player(){
+    }
 
     public Player(String name, int gold) {
         this.name = name;

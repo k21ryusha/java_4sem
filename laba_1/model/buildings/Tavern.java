@@ -1,4 +1,4 @@
-package laba_1.model.Buildings;
+package laba_1.model.buildings;
 
 public class Tavern extends Building {
     public Tavern() {

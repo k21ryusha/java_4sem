@@ -4,8 +4,8 @@ import laba_1.battle.Battle;
 import laba_1.MapController.BattleMap;
 import laba_1.MapController.Map;
 import laba_1.model.*;
-import laba_1.model.Buildings.Castle;
-import laba_1.model.Units.*;
+import laba_1.model.buildings.Castle;
+import laba_1.model.units.*;
 import laba_1.util.Constants;
 import laba_1.view.Console;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,36 +17,48 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Scanner;
 
-
 public class BattleTest {
     private Battle battle;
     private Player player;
     private Player bot;
     private Console console;
+    private BattleMap bmap;
     private Map map;
     private Game game;
-    private Castle castle;
-    private Tile tile;
 
     @BeforeEach
     void setUp() {
+        // Создаём карту
+        map = new Map(Constants.MAP_WIDTH, Constants.MAP_HEIGHT);
+        console = new Console();
+
+        // Игроки
         player = new Player("Player", 1000);
         bot = new Player("Bot", 1000);
-        console = new Console();
-        map = new Map(10, 10);
-        game = new Game(map, console);
-        BattleMap bmap = new BattleMap(8, 8);
 
-        battle = new Battle(player, bot, console, map, game);
-        Castle playerCastle = new Castle(player, 0,0);
+        // Замки
+        Castle playerCastle = new Castle(player, 0, 0);
         Castle botCastle = new Castle(bot, Constants.MAP_WIDTH - 1, Constants.MAP_HEIGHT - 1);
-
+        map.getTiles()[0][0].setOccupant(playerCastle);
+        map.getTiles()[Constants.MAP_WIDTH - 1][Constants.MAP_HEIGHT - 1].setOccupant(botCastle);
         player.setCastle(playerCastle);
         bot.setCastle(botCastle);
-        Hero playerHero = new Hero("PlayerHero", 0, 0, player);
-        Hero botHero = new Hero("BotHero", 0, 0, bot);
+
+        // Герои
+        Hero playerHero = new Hero("PlayerHero", 1, 0, player);
+        Hero botHero = new Hero("BotHero", Constants.MAP_WIDTH - 2, Constants.MAP_HEIGHT - 1, bot);
+        map.getTiles()[1][0].setOccupant(playerHero);
+        map.getTiles()[Constants.MAP_WIDTH - 2][Constants.MAP_HEIGHT - 1].setOccupant(botHero);
         player.setHero(playerHero);
         bot.setHero(botHero);
+
+        // Игра
+        game = new Game(map, console, player.getName());
+        game.setTestMode(true); // Тестовый режим без System.exit
+
+        // Battle
+        bmap = new BattleMap(10, 10);
+        battle = new Battle(player, bot, console, bmap, game);
     }
 
     @Test
@@ -87,7 +99,7 @@ public class BattleTest {
         defender.setHp(50);
         defender.setReward(20);
 
-        Tile defenderTile = new Tile(0, 0, null);
+        BattleTile defenderTile = new BattleTile(0, 0);
         defenderTile.setOccupant(defender);
 
         int initialHp = defender.getHp();
@@ -107,7 +119,7 @@ public class BattleTest {
         defender.setHp(40);
         defender.setReward(25);
 
-        Tile defenderTile = new Tile(0, 0, null);
+        BattleTile defenderTile = new BattleTile(0, 0);
         defenderTile.setOccupant(defender);
 
         int initialGold = attacker.getOwner().getGold();
@@ -122,8 +134,6 @@ public class BattleTest {
     @Test
     void playerTurn_attackInRange_performsAttack() {
         BattleMap testMap = new BattleMap(8, 8);
-        battle = new Battle(player, bot, console, map, game);
-
         Unit playerUnit = new Swordsman(player);
         playerUnit.setX(2);
         playerUnit.setY(2);
@@ -141,7 +151,7 @@ public class BattleTest {
 
         battle.bmap = testMap;
 
-        String simulatedInput = "2 2\n4\n";
+        String simulatedInput = "2 2\n4\n";  // Перемещение вправо
         InputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         Scanner testScanner = new Scanner(inputStream);
 
@@ -149,11 +159,8 @@ public class BattleTest {
         battle.setScanner(testScanner);
 
         int initialHp = botUnit.getHp();
-
         battle.playerTurn();
-
-        assertTrue(botUnit.getHp() < initialHp,
-                "HP вражеского юнита должно уменьшиться после атаки");
+        assertTrue(botUnit.getHp() < initialHp, "HP вражеского юнита должно уменьшиться после атаки");
 
         battle.setScanner(originalScanner);
     }
@@ -161,7 +168,6 @@ public class BattleTest {
     @Test
     void isBattleFinished_noPlayerUnits_returnsTrue() {
         player.getHero().getArmy().clear();
-
         bot.getHero().addUnit(new Spearman(bot));
 
         assertTrue(battle.isBattleFinished());
@@ -177,7 +183,7 @@ public class BattleTest {
         defender.setHp(40);
         defender.setReward(25);
 
-        Tile defenderTile = new Tile(0, 0, null);
+        BattleTile defenderTile = new BattleTile(0, 0);
         defenderTile.setOccupant(defender);
 
         int initialGold = attacker.getOwner().getGold();
@@ -193,4 +199,3 @@ public class BattleTest {
         );
     }
 }
-

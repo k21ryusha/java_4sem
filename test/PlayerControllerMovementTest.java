@@ -1,6 +1,7 @@
 package test;
 
 import laba_1.MapController.Map;
+import laba_1.game.Game;
 import laba_1.game.PlayerController;
 import laba_1.model.Hero;
 import laba_1.model.Player;
@@ -19,12 +20,13 @@ public class PlayerControllerMovementTest {
         private Player player;
         private Map map;
         private PlayerController controller;
+        private Game game;
 
         @BeforeEach
         void setUp() {
             player = new Player("TestPlayer", 1000);
             map = new Map(Constants.MAP_WIDTH, Constants.MAP_HEIGHT);
-            controller = new PlayerController(player, map, null);
+            controller = new PlayerController(player, map, null,game);
 
             Hero hero = new Hero("TestHero", 5, 5, player);
             player.setHero(hero);

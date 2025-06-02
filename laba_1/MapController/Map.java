@@ -3,7 +3,10 @@ package laba_1.MapController;
 import laba_1.model.TerrainType;
 import laba_1.model.Tile;
 
-public class Map {
+import java.io.Serializable;
+
+public class Map implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int x;
     private int y;
     private Tile[][] tiles;

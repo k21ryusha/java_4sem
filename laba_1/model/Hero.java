@@ -1,20 +1,28 @@
 package laba_1.model;
 
-import laba_1.model.Units.Unit;
+import com.google.gson.annotations.Expose;
+import laba_1.model.units.Unit;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hero {
+public class Hero implements Occupant {
+    @Expose
     public List<Unit> army;
-    private String name;
-    private int x;
-    private int y;
-    private Player owner;
+    public String name;
+    @Expose
+    public int x;
+    @Expose
+    public int y;
+    private transient Player owner;
+    @Expose
     public List<Unit> dead_army;
+    @Expose
     public List<Unit> revive_army;
+    @Expose
     public List<Unit> sacked_army;
 
+    public Hero() {}
 
     public Hero(String name, int x, int y, Player owner) {
         this.name = name;
@@ -68,25 +76,49 @@ public class Hero {
         army.add(unit);
     }
 
-
-    public List<Unit> getDeadArmy() {
-        return dead_army;
+    public void addDeadUnit(Unit dead_unit) {
+        if (this.dead_army == null) {
+            this.dead_army = new ArrayList<>();
+        }
+        this.dead_army.add(dead_unit);
     }
 
-    public void addDeadUnit(Unit dead_unit) {
-        this.dead_army.add(dead_unit);
+    public void addReviveUnit(Unit revive_unit) {
+        if (this.revive_army == null) {
+            this.revive_army = new ArrayList<>();
+        }
+        this.revive_army.add(revive_unit);
+    }
+
+    public void addSackedUnit(Unit sacked_unit) {
+        if (this.sacked_army == null) {
+            this.sacked_army = new ArrayList<>();
+        }
+        this.sacked_army.add(sacked_unit);
+    }
+    public List<Unit> getDeadArmy() {
+        return dead_army;
     }
     public List<Unit> getReviveArmy() {
         return revive_army;
     }
-    public void addReviveUnit(Unit revive_unit) {
-        this.revive_army.add(revive_unit);
-    }
     public List<Unit> getSackedArmy() {
         return sacked_army;
     }
-    public void addSackedUnit(Unit sacked_unit) {
-        this.sacked_army.add(sacked_unit);
+    public Player getPlayer() {
+        return owner;
+    }
+    public void setPlayer(Player player) {
+        this.owner = player;
+    }
+    public void setDeadArmy(List<Unit> deadArmy) {
+        this.dead_army = deadArmy;
+    }
+    public void setReviveArmy(List<Unit> reviveArmy) {
+        this.revive_army = reviveArmy;
+    }
+    public void setSackedArmy(List<Unit> sackedArmy) {
+        this.sacked_army = sackedArmy;
     }
 
 }

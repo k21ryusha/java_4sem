@@ -6,5 +6,7 @@ public class Constants {
     public static final int NEUTRAL_ZONE_PENALTY = 100;  // Штраф для нейтральной зоны
     public static final int PLAYER_ZONE_PENALTY = 50;   // Штраф для зоны игрока
     public static final int OPPONENTS_ZONE_PENALTY = 75;      // Штраф для зоны противника
-    public static final int ROAD_PENALTY = 0;
+    public static final int ROAD_PENALTY = 0;;
+    public static final int WITH_PENALTY_OBSTACLE= 100;
+    public static final int PENALTY_BLOCK_OBSTACLE = 500;
 }

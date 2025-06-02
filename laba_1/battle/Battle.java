@@ -3,12 +3,13 @@ package laba_1.battle;
 import laba_1.MapController.BattleMap;
 import laba_1.MapController.Map;
 import laba_1.game.Game;
-import laba_1.model.Buildings.Castle;
+import laba_1.model.BattleTile;
+import laba_1.model.buildings.Castle;
 import laba_1.model.Hero;
 import laba_1.model.Player;
-import laba_1.model.Tile;
-import laba_1.model.Units.Unit;
+import laba_1.model.units.Unit;
 import laba_1.view.Console;
+import logs.GameLogger;
 
 import java.util.Scanner;
 
@@ -22,13 +23,13 @@ public class Battle {
     private Map map;
     private boolean isFinalBattle = false;
 
-    public Battle(Player player, Player bot, Console console, Map map, Game game) {
+    public Battle(Player player, Player bot, Console console, BattleMap map, Game game) {
         this.player = player;
         this.bot = bot;
         this.console = console;
-        this.map = map;
         this.bmap = new BattleMap(8, 8);
         this.game = game;
+        this.map = game.getMap();
     }
 
     public void setFinalBattle(boolean isFinalBattle) {
@@ -41,7 +42,7 @@ public class Battle {
         return dx <= attacker.getMovement() && dy <= attacker.getMovement();
     }
 
-    public void attackUnit(Unit attacker, Unit defender, Tile defenderTile) {
+    public void attackUnit(Unit attacker, Unit defender, BattleTile defenderTile) {
         System.out.println(attacker.getName() + "( " + attacker.getOwner().getName() + " )" + " (HP: " + attacker.getHp() + ") атакует " +
                 defender.getName() + "( " + defender.getOwner().getName() + " )"+ " (HP: " + defender.getHp() + ")");
         defender.setHp(defender.getHp() - attacker.getDamage());
@@ -49,12 +50,24 @@ public class Battle {
             System.out.println(attacker.getName() + "( " + attacker.getOwner().getName() + " )"+ " был убит (HP: " + attacker.getHp() + ") " + defender.getName());
             defenderTile.setOccupant(null);
             attacker.getOwner().getHero().addDeadUnit(attacker);
-            attacker.getOwner().setGold(attacker.getOwner().getGold() + defender.getReward());
+            attacker.getOwner().getHero().getArmy().remove(attacker);
+            defender.getOwner().setGold(defender.getOwner().getGold() + attacker.getReward());
+            if (defender.getOwner() == player) {
+                this.game.addGoldFromKills(attacker.getReward());
+            }
+
         } else if (defender.getHp() <= 0) {
-            System.out.println(defender.getName() + "( " + defender.getOwner().getName() + " )"+ " был убит (HP: " + defender.getHp() + ") " + attacker.getName());
-            defender.getOwner().getHero().addDeadUnit(defender);
-            defenderTile.setOccupant(null);
-            attacker.getOwner().setGold(defender.getOwner().getGold() + defender.getReward());
+                System.out.println(defender.getName() + "( " + defender.getOwner().getName() + " )" +
+                        " был убит (HP: " + defender.getHp() + ") " + attacker.getName());
+
+                defender.getOwner().getHero().addDeadUnit(defender);
+                defender.getOwner().getHero().getArmy().remove(defender);
+                defenderTile.setOccupant(null);
+
+                attacker.getOwner().setGold(attacker.getOwner().getGold() + defender.getReward());
+            if (attacker.getOwner() == player) {
+                this.game.addGoldFromKills(defender.getReward());
+            }
         }
     }
 
@@ -81,23 +94,30 @@ public class Battle {
     }
 
     public void startBattle(){
-    System.out.println("Битва началась! Удачи!");
-        bmap.initializeBattleMap(player, bot);
-        checkDefeat(player);
-        checkDefeat(bot);
-        if(player.getHero().getArmy() == null || bot.getHero().getArmy() == null) {
-            System.out.println("Вы не закупили армию, хотя у вас была такая возможность....");
-            game.endGame(false);
-        }
-        while (!isBattleFinished()) {
-            playerTurn();
-            if (isBattleFinished()) break;
-            botTurn();
-            if (isBattleFinished()) break;
-        }
-
+        GameLogger.logInfo("Начало сражения");
+        try {
+            System.out.println("Битва началась! Удачи!");
+            this.bmap = new BattleMap(8, 8);
+            bmap.initializeBattleMap(player, bot);
+            checkDefeat(player);
+            checkDefeat(bot);
+            if (player.getHero().getArmy() == null || bot.getHero().getArmy() == null) {
+                System.out.println("Вы не закупили армию, хотя у вас была такая возможность....");
+                game.endGame(false);
+                return;
+            }
+            while (!isBattleFinished()) {
+                playerTurn();
+                if (isBattleFinished()) break;
+                botTurn();
+                if (isBattleFinished()) break;
+            }
         endBattle();
-
+            game.checkVictoryConditions();
+        }
+        catch (Exception e) {
+            GameLogger.logError("Ошибка в битве: " + e.getMessage());
+        }
     }
 
     public void playerTurn() {
@@ -106,7 +126,7 @@ public class Battle {
         int x = scanner.nextInt();
         int y = scanner.nextInt();
         scanner.nextLine(); // Очистка буфера
-        Tile tile = bmap.getTiles()[x][y];
+        BattleTile tile = bmap.getTiles()[x][y];
         if (tile.getOccupant() instanceof Unit unit && unit.getOwner() == player) {
             System.out.println("Выберите направление для перемещения ():");
             System.out.println("1 - вверх, 2 - вниз, 3 - влево, 4 - вправо, 5 - вправо и вниз, 6 - влево и вниз, " +
@@ -151,24 +171,16 @@ public class Battle {
                     return;
             }
 
-            if (newX >= 0 && newX < bmap.getX() && newY >= 0 && newY < bmap.getY()) {
-                Tile targetTile = bmap.getTiles()[newX][newY];
-                Tile startTile = bmap.getTiles()[x][y];
-                if (targetTile.getOccupant() == null && startTile.getOccupant() == unit) {
+            if (newX >= 0 && newX < bmap.getWidth() && newY >= 0 && newY < bmap.getHeight()) {
+                BattleTile targetTile = bmap.getTiles()[newX][newY];
+                BattleTile startTile = bmap.getTiles()[x][y];
+                if (targetTile.getOccupant() == null && startTile.getOccupant() instanceof Unit startUnit &&
+                        startUnit.getName().equals(unit.getName())) {
                     tile.setOccupant(null);
                     targetTile.setOccupant(unit);
                     unit.setX(newX);
                     unit.setY(newY);
                     System.out.println("Юнит перемещен.");
-                    for (int i = 0; i < bmap.getX(); i++) {
-                        for (int j = 0; j < bmap.getY(); j++) {
-                            Tile target = bmap.getTiles()[i][j];
-                            if (target.getOccupant() instanceof Unit enemy && enemy.getOwner() == bot && isInRange(unit, enemy)) {
-                                attackUnit(unit, enemy, target);
-                                break;
-                            }
-                        }
-                    }
                 } else {
                     System.out.println("Целевая клетка занята.");
                 }
@@ -183,9 +195,9 @@ public class Battle {
     private void botTurn() {
         bmap.displayBattleMap(bot, player);
         // Простейшая логика для бота: перемещает первого доступного юнита в случайном направлении
-        for (int x = 0; x < bmap.getX(); x++) {
-            for (int y = 0; y < bmap.getY(); y++) {
-                Tile tile = bmap.getTiles()[x][y];
+        for (int x = 0; x < bmap.getWidth(); x++) {
+            for (int y = 0; y < bmap.getHeight(); y++) {
+                BattleTile tile = bmap.getTiles()[x][y];
                 if (tile.getOccupant() instanceof Unit unit && unit.getOwner() == bot) {
                     int direction = (int) (Math.random() * 4);
                     int newX = x;
@@ -222,17 +234,17 @@ public class Battle {
                             break;
                     }
 
-                    if (newX >= 0 && newX < bmap.getX() && newY >= 0 && newY < bmap.getY()) {
-                        Tile targetTile = bmap.getTiles()[newX][newY];
+                    if (newX >= 0 && newX < bmap.getWidth() && newY >= 0 && newY < bmap.getHeight()) {
+                        BattleTile targetTile = bmap.getTiles()[newX][newY];
                         if (targetTile.getOccupant() == null) {
                             tile.setOccupant(null);
                             targetTile.setOccupant(unit);
                             unit.setX(newX);
                             unit.setY(newY);
                             System.out.println("Бот переместил юнита.");
-                            for (int i = 0; i < bmap.getX(); i++) {
-                                for (int j = 0; j < bmap.getY(); j++) {
-                                    Tile target = bmap.getTiles()[i][j];
+                            for (int i = 0; i < bmap.getWidth(); i++) {
+                                for (int j = 0; j < bmap.getHeight(); j++) {
+                                    BattleTile target = bmap.getTiles()[i][j];
                                     if (target.getOccupant() instanceof Unit enemy && enemy.getOwner() == player && isInRange(unit, enemy)) {
                                         attackUnit(unit, enemy, target);
                                         return;
@@ -254,9 +266,9 @@ public class Battle {
         boolean playerHasUnits = false;
         boolean botHasUnits = false;
 
-        for (int x = 0; x < bmap.getX(); x++) {
-            for (int y = 0; y < bmap.getY(); y++) {
-                Tile tile = bmap.getTiles()[x][y];
+        for (int x = 0; x < bmap.getWidth(); x++) {
+            for (int y = 0; y < bmap.getHeight(); y++) {
+                BattleTile tile = bmap.getTiles()[x][y];
                 if (tile.getOccupant() instanceof Unit unit) {
                     if (unit.getOwner() == player) {
                         playerHasUnits = true;
@@ -275,6 +287,7 @@ public class Battle {
             return true;
         } else if (!botHasUnits) {
             System.out.println("Все юниты бота уничтожены. Вы победили!");
+            game.incrementBattleVictories();
             bot.getHero().setArmy(null);
             moveLoserHeroToStart(bot);
             return true;
@@ -338,9 +351,9 @@ public class Battle {
     private boolean isFinalBattleFinished() {
         boolean playerHasUnits = false;
         boolean botHasUnits = false;
-        for (int x = 0; x < bmap.getX(); x++) {
-            for (int y = 0; y < bmap.getY(); y++) {
-                Tile tile = bmap.getTiles()[x][y];
+        for (int x = 0; x < bmap.getWidth(); x++) {
+            for (int y = 0; y < bmap.getHeight(); y++) {
+                BattleTile tile = bmap.getTiles()[x][y];
                 if (tile.getOccupant() instanceof Unit unit) {
                     if (unit.getOwner() == player) {
                         playerHasUnits = true;
@@ -361,6 +374,7 @@ public class Battle {
     }
     private void endBattle () {
         System.out.println("Битва завершена.");
+        game.checkVictoryConditions();
     }
 
     public Scanner getScanner() {
