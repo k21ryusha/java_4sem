@@ -1,0 +1,589 @@
+{
+  "player": {
+    "name": "Кирилл",
+    "hero": {
+      "type": "Hero",
+      "army": [
+        {
+          "type": "Spearman",
+          "name": "Копейщик",
+          "level": 1,
+          "hp": 100,
+          "damage": 50,
+          "movement": 1,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "type": "Spearman",
+          "name": "Копейщик",
+          "level": 1,
+          "hp": 100,
+          "damage": 50,
+          "movement": 1,
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "x": 2,
+      "y": 2,
+      "dead_army": [],
+      "revive_army": [],
+      "sacked_army": []
+    },
+    "castle": {
+      "type": "Castle",
+      "x": 0,
+      "y": 0,
+      "buildings": [
+        {
+          "type": "Tavern"
+        },
+        {
+          "type": "Watchtower"
+        }
+      ],
+      "discontent": 0.0
+    },
+    "gold": 750
+  },
+  "bot": {
+    "name": "Bot",
+    "hero": {
+      "type": "Hero",
+      "army": [
+        {
+          "type": "Paladin",
+          "name": "Маг",
+          "level": 5,
+          "hp": 150,
+          "damage": 75,
+          "movement": 2,
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "x": 7,
+      "y": 7,
+      "dead_army": [],
+      "revive_army": [],
+      "sacked_army": []
+    },
+    "castle": {
+      "type": "Castle",
+      "x": 9,
+      "y": 9,
+      "buildings": [
+        {
+          "type": "Tavern"
+        },
+        {
+          "type": "Cathedral"
+        }
+      ],
+      "discontent": 0.0
+    },
+    "gold": 550
+  },
+  "gameOver": false,
+  "map": [
+    [
+      {
+        "terrain": "PLAYER_CASTLE",
+        "occupant": {
+          "owner": "Кирилл",
+          "buildings": [
+            {
+              "type": "Tavern"
+            },
+            {
+              "type": "Watchtower"
+            }
+          ],
+          "x": 0,
+          "y": 0,
+          "type": "Castle"
+        }
+      },
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "LAKE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "LAKE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      }
+    ],
+    [
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "ROAD",
+        "occupant": "None"
+      },
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "LAKE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "LAKE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      }
+    ],
+    [
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "ROAD",
+        "occupant": {
+          "owner": "Кирилл",
+          "army": [
+            {
+              "type": "Spearman",
+              "name": "Копейщик",
+              "level": 1,
+              "hp": 100,
+              "damage": 50,
+              "movement": 1,
+              "x": 0,
+              "y": 0
+            },
+            {
+              "type": "Spearman",
+              "name": "Копейщик",
+              "level": 1,
+              "hp": 100,
+              "damage": 50,
+              "movement": 1,
+              "x": 0,
+              "y": 0
+            }
+          ],
+          "deadArmy": [],
+          "reviveArmy": [],
+          "sackedArmy": [],
+          "x": 2,
+          "name": "Новый герой",
+          "y": 2,
+          "type": "Hero"
+        }
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      }
+    ],
+    [
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "ROAD",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      }
+    ],
+    [
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "ROAD",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      }
+    ],
+    [
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "PLAYER_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "ROAD",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      }
+    ],
+    [
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "ROAD",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      }
+    ],
+    [
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "ROAD",
+        "occupant": {
+          "owner": "Bot",
+          "army": [
+            {
+              "type": "Paladin",
+              "name": "Маг",
+              "level": 5,
+              "hp": 150,
+              "damage": 75,
+              "movement": 2,
+              "x": 0,
+              "y": 0
+            }
+          ],
+          "deadArmy": [],
+          "reviveArmy": [],
+          "sackedArmy": [],
+          "x": 7,
+          "name": "Bot Hero",
+          "y": 7,
+          "type": "Hero"
+        }
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      }
+    ],
+    [
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "ROAD",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      }
+    ],
+    [
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "NEUTRAL",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_ZONE",
+        "occupant": "None"
+      },
+      {
+        "terrain": "BOT_CASTLE",
+        "occupant": {
+          "owner": "Bot",
+          "buildings": [
+            {
+              "type": "Tavern"
+            },
+            {
+              "type": "Cathedral"
+            }
+          ],
+          "x": 9,
+          "y": 9,
+          "type": "Castle"
+        }
+      }
+    ]
+  ]
+}

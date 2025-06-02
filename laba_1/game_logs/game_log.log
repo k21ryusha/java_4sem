@@ -1,0 +1,372 @@
+мая 17, 2025 4:07:59 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 17, 2025 4:08:32 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 17, 2025 4:08:36 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 17, 2025 4:08:47 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 17, 2025 4:08:50 PM logs.GameLogger logWarning
+WARNING: Пользователь ввёл неверный пункт меню.
+мая 17, 2025 4:21:47 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 17, 2025 4:22:17 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 17, 2025 4:25:51 PM logs.GameLogger logError
+SEVERE: Ошибка при запуске игры: null
+мая 17, 2025 4:26:40 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 17, 2025 4:27:33 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 17, 2025 4:27:50 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 17, 2025 4:32:32 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 20, 2025 5:43:04 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 20, 2025 5:43:16 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 20, 2025 5:45:23 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 20, 2025 6:19:49 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 20, 2025 6:20:14 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 20, 2025 6:20:24 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 20, 2025 6:20:59 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 20, 2025 6:20:59 PM logs.GameLogger logError
+SEVERE: Ошибка в битве: Cannot invoke "java.util.List.iterator()" because "army" is null
+мая 20, 2025 6:22:22 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 20, 2025 6:22:22 PM logs.GameLogger logError
+SEVERE: Ошибка в битве: Cannot invoke "java.util.List.iterator()" because "army" is null
+мая 20, 2025 6:23:26 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 20, 2025 6:23:34 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 20, 2025 6:23:51 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 20, 2025 6:25:10 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 20, 2025 6:25:16 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 20, 2025 6:25:34 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 20, 2025 6:26:13 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 20, 2025 6:57:07 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 20, 2025 7:02:19 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 20, 2025 7:03:15 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 20, 2025 7:15:24 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 20, 2025 7:15:47 PM logs.GameLogger logError
+SEVERE: Ошибка при запуске игры: class java.util.HashMap cannot be cast to class laba_1.model.Player (java.util.HashMap is in module java.base of loader 'bootstrap'; laba_1.model.Player is in unnamed module of loader 'app')
+мая 24, 2025 5:24:38 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 5:25:55 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 5:33:59 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 5:36:33 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 5:41:02 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 5:58:58 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:06:55 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:07:47 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:10:11 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:14:19 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:15:02 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:15:28 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:15:45 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:17:42 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:19:03 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:20:47 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:21:18 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:25:26 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:25:36 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:27:49 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:30:20 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:34:35 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:36:27 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:36:50 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 6:37:26 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 6:42:24 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:45:01 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:46:28 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:48:16 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:50:10 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:50:58 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:52:31 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:52:37 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 6:52:50 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:02:31 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:02:53 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 7:06:31 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:06:48 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 7:06:59 AM logs.GameLogger logError
+SEVERE: Ошибка в битве: Index 43 out of bounds for length 8
+мая 24, 2025 7:07:34 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 7:09:50 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 7:13:01 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:13:29 AM logs.GameLogger logWarning
+WARNING: Пользователь ввёл неверный пункт меню.
+мая 24, 2025 7:13:35 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 7:19:46 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:20:15 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 7:24:32 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:24:52 AM logs.GameLogger logError
+SEVERE: Ошибка при запуске игры: Cannot invoke "java.util.List.iterator()" because "this.buildings" is null
+мая 24, 2025 7:25:26 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:25:30 AM logs.GameLogger logError
+SEVERE: Ошибка при запуске игры: Cannot invoke "java.util.List.iterator()" because "this.buildings" is null
+мая 24, 2025 7:27:04 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:27:08 AM logs.GameLogger logError
+SEVERE: Ошибка при запуске игры: Cannot invoke "java.util.List.iterator()" because "this.buildings" is null
+мая 24, 2025 7:29:18 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:34:26 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:34:43 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:39:44 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:42:09 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:42:34 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 7:43:05 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 7:44:46 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:45:18 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 7:47:26 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:47:57 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:51:56 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:52:22 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:52:41 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 7:58:53 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 7:59:22 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 8:09:44 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 8:10:08 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 8:15:02 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 8:16:05 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 8:18:35 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 8:20:50 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 8:21:14 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 8:21:44 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 24, 2025 8:59:33 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 9:27:01 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 9:33:39 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 9:34:20 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 9:34:43 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 9:36:15 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 9:39:32 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 9:39:46 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 9:40:09 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 9:42:09 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 24, 2025 9:43:02 AM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 30, 2025 11:35:00 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 30, 2025 11:35:20 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 30, 2025 11:36:14 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 31, 2025 9:21:17 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 31, 2025 9:22:57 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 31, 2025 9:38:11 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 31, 2025 9:38:28 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 31, 2025 9:46:05 AM logs.GameLogger logInfo
+INFO: Игра начата
+мая 31, 2025 2:22:39 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 31, 2025 2:22:55 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 31, 2025 2:24:32 PM logs.GameLogger logInfo
+INFO: Начало сражения
+мая 31, 2025 2:30:59 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 31, 2025 2:33:24 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 31, 2025 2:36:07 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 31, 2025 2:36:33 PM logs.GameLogger logInfo
+INFO: Игра начата
+мая 31, 2025 2:37:16 PM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:00:53 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:01:01 AM logs.GameLogger logWarning
+WARNING: Пользователь попытался воскресить юнита, хотя у него нет умерших юнитов
+июн. 02, 2025 6:05:02 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:05:05 AM logs.GameLogger logWarning
+WARNING: Пользователь попытался воскресить юнита, хотя у него нет умерших юнитов
+июн. 02, 2025 6:05:19 AM logs.GameLogger logWarning
+WARNING: Пользователь попытался воскресить юнита, хотя у него нет умерших юнитов
+июн. 02, 2025 6:10:17 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:13:01 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:13:08 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:13:18 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:13:34 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:17:30 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:18:08 AM logs.GameLogger logWarning
+WARNING: Пользователь попытался воскресить юнита, хотя у него нет умерших юнитов
+июн. 02, 2025 6:23:15 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:23:59 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:25:01 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:27:56 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:28:01 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:28:21 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:31:47 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:33:46 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:40:37 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:40:37 AM logs.GameLogger logError
+SEVERE: Ошибка при запуске игры: Cannot invoke "laba_1.model.buildings.Castle.getDiscontent()" because the return value of "laba_1.model.Player.getCastle()" is null
+июн. 02, 2025 6:41:57 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:43:58 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:46:22 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:47:18 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:47:38 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:48:10 AM logs.GameLogger logInfo
+INFO: Начало сражения
+июн. 02, 2025 6:50:59 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:51:20 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:51:34 AM logs.GameLogger logInfo
+INFO: Начало сражения
+июн. 02, 2025 6:52:17 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:52:32 AM logs.GameLogger logInfo
+INFO: Начало сражения
+июн. 02, 2025 6:54:42 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:54:46 AM logs.GameLogger logInfo
+INFO: Начало сражения
+июн. 02, 2025 6:56:56 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:57:00 AM logs.GameLogger logInfo
+INFO: Начало сражения
+июн. 02, 2025 6:58:10 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 6:58:23 AM logs.GameLogger logInfo
+INFO: Начало сражения
+июн. 02, 2025 6:59:50 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 7:00:15 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 7:00:20 AM logs.GameLogger logInfo
+INFO: Начало сражения
+июн. 02, 2025 7:00:39 AM logs.GameLogger logError
+SEVERE: Ошибка в битве: Cannot invoke "java.util.List.add(Object)" because "this.dead_army" is null
+июн. 02, 2025 7:05:50 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 7:05:54 AM logs.GameLogger logInfo
+INFO: Начало сражения
+июн. 02, 2025 9:29:04 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 9:29:42 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 9:31:48 AM logs.GameLogger logInfo
+INFO: Игра начата
+июн. 02, 2025 9:33:11 AM logs.GameLogger logInfo
+INFO: Игра начата
