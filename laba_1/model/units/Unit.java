@@ -102,4 +102,14 @@ public String getName() {
     public void setReward(int i) {
         this.reward = i;
     }
+
+    private int damageBonus = 0;
+
+    public void increaseDamage(int bonus) {
+        this.damageBonus += bonus;
+    }
+
+    public int getTotalDamage() {
+        return damage + damageBonus; // если baseDamage есть
+    }
 }

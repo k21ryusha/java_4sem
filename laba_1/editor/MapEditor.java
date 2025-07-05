@@ -3,8 +3,10 @@ package laba_1.editor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import laba_1.MapController.Map;
+import laba_1.laba_4_buildings.Barbershop;
+import laba_1.laba_4_buildings.Cafe;
+import laba_1.laba_4_buildings.Hotel;
 import laba_1.model.ObstacleType;
-import laba_1.model.buildings.Cafe;
 import laba_1.model.buildings.Castle;
 import laba_1.model.TerrainType;
 import laba_1.model.Tile;
@@ -16,7 +18,7 @@ import java.util.*;
 
 public class MapEditor {
     private final Scanner scanner = new Scanner(System.in);
-    private final String mapsDirectory = "maps";
+    private static final String mapsDirectory = "maps";
     private final Console console = new Console();
     private java.util.Map<String, ObstacleType> customObstacleSymbols;
 
@@ -70,11 +72,21 @@ public class MapEditor {
         tiles[width - 1][height - 1].setTerrainType(TerrainType.BOT_CASTLE);
         tiles[width - 1][height - 1].setOccupant(new Castle(null, width - 1, height - 1));
 
-        int cafeX = 5;
-        int cafeY = 3;
+        int cafeX = 5, cafeY = 3;
+        int hotelX = 5, hotelY = 0;
+        int barberX = 2, barberY = 7;
+
         tiles[cafeX][cafeY].setTerrainType(TerrainType.URBAN);
         tiles[cafeX][cafeY].setOccupant(new Cafe(cafeX, cafeY));
-        System.out.println("Кафе «Сырники от тети Глаши» установлено на (" + cafeX + ", " + cafeY + ")");
+        System.out.println("✅ Кафе установлено на (" + cafeX + ", " + cafeY + ")");
+
+        tiles[hotelX][hotelY].setTerrainType(TerrainType.HOTEL);
+        tiles[hotelX][hotelY].setOccupant(new Hotel(hotelX, hotelY));
+        System.out.println("✅ Отель установлен на (" + hotelX + ", " + hotelY + ")");
+
+        tiles[barberX][barberY].setTerrainType(TerrainType.BARBERSHOP);
+        tiles[barberX][barberY].setOccupant(new Barbershop(barberX, barberY));
+        System.out.println("✅ Парикмахерская установлена на (" + barberX + ", " + barberY + ")");
 
         Tile[][] originalTiles = new Tile[width][height];
         for (int i = 0; i < width; i++) {
@@ -105,8 +117,8 @@ public class MapEditor {
                         System.out.println("❗ Нельзя изменять клетку с замком!");
                         break;
                     }
-                    if ((x == 0 && y == 0) || (x == width - 1 && y == height - 1) || (x == cafeX && y == cafeY)) {
-                        System.out.println("❗ Нельзя изменять клетку с замком или кафе!");
+                    if (tiles[x][y].getOccupant() instanceof Castle || tiles[x][y].getOccupant() instanceof Cafe || tiles[x][y].getOccupant() instanceof Hotel || tiles[x][y].getOccupant() instanceof Barbershop) {
+                        System.out.println("❗ Нельзя изменять клетку с замком или зданием!");
                         break;
                     }
                     switch (input) {
@@ -151,6 +163,7 @@ public class MapEditor {
                     } else {
                         System.out.print("Введите имя карты: ");
                         String name = scanner.nextLine();
+                        map.setName(name);
                         saveMapToFile(name, map);
                         saveMapReportAsJson(name, map);
                         System.out.println("Карта сохранена.");
@@ -182,11 +195,11 @@ public class MapEditor {
     }
 
 
-    public void saveMapToFile(String name, Map map) {
-        saveVisualMap(name, map);
+    public static void saveMapToFile(String name, Map map) {
+        saveVisualMap(map.getName(), map);
     }
 
-    private void saveVisualMap(String name, Map map) {
+    public static void saveVisualMap(String name, Map map) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(mapsDirectory + "/" + name + ".txt"))) {
             writer.println(map.getX() + " " + map.getY());
             for (int y = 0; y < map.getY(); y++) {
@@ -236,6 +249,7 @@ public class MapEditor {
             int height = Integer.parseInt(size[1]);
 
             Map map = new Map(width, height);
+            map.setName(name);
             Tile[][] tiles = new Tile[width][height];
 
             for (int y = 0; y < height; y++) {
@@ -259,6 +273,9 @@ public class MapEditor {
                             case "\uD83C\uDF00" -> TerrainType.NEUTRAL;
                             case "♣\uFE0F" -> TerrainType.PLAYER_ZONE;
                             case "♦\uFE0F" -> TerrainType.BOT_ZONE;
+                            case "\uD83C\uDF7D" -> TerrainType.URBAN;
+                            case "\uD83C\uDFE8" -> TerrainType.HOTEL;
+                            case "✂" -> TerrainType.BARBERSHOP;
                             default -> TerrainType.NEUTRAL;
                         };
                         tile.setTerrainType(type);
@@ -337,7 +354,7 @@ public class MapEditor {
         return names;
     }
 
-    private String getEditorSymbol(Tile tile) {
+    private static String getEditorSymbol(Tile tile) {
         if (tile == null) return " ";
 
         if (tile.getObstacle() != ObstacleType.NONE && !tile.getObstacleSymbol().isEmpty()) {
@@ -354,6 +371,9 @@ public class MapEditor {
         }
 
         return switch (tile.getTerrainType()) {
+            case HOTEL -> "\uD83C\uDFE8";
+            case URBAN -> "\uD83C\uDF7D";
+            case BARBERSHOP -> "✂";
             case ROAD -> "\uD83D\uDEE3";
             case LAKE -> "\uD83C\uDF0A";
             case PLAYER_CASTLE -> "🏰";
@@ -361,7 +381,6 @@ public class MapEditor {
             case NEUTRAL -> "\uD83C\uDF00";
             case PLAYER_ZONE -> "♣\uFE0F";
             case BOT_ZONE -> "♦\uFE0F";
-            case URBAN -> "\uD83C\uDF7D";
             default -> "\uD83C\uDF00";
         };
     }
@@ -386,7 +405,7 @@ public class MapEditor {
         }
         return false;
     }
-    public void saveMapReportAsJson(String name, Map map) {
+    public static void saveMapReportAsJson(String name, Map map) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         List<java.util.Map<String, Object>> cellsReport = new ArrayList<>();
@@ -415,7 +434,7 @@ public class MapEditor {
         }
     }
 
-    public void saveCustomObstaclesLegend(String name, Map map) {
+    public static void saveCustomObstaclesLegend(String name, Map map) {
         java.util.Map<String, ObstacleType> legend = new HashMap<>();
         Tile[][] tiles = map.getTiles();
         for (int x = 0; x < map.getX(); x++) {

@@ -1,14 +1,16 @@
 package laba_1.game;
 
 import laba_1.MapController.Map;
+import laba_1.laba_4_buildings.*;
 import laba_1.model.*;
-import laba_1.model.buildings.Cafe;
 import laba_1.model.units.Unit;
 import laba_1.util.Constants;
 import laba_1.util.MovementCalculator;
 import laba_1.view.Console;
 import logs.GameLogger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import java.util.Scanner;
@@ -20,13 +22,15 @@ public class PlayerController {
     private final Console console;
     private final Map map;
     private final Game game;
+    private Simulator simulator;
 
-    public PlayerController(Player player, Map map, Console console,Game game) {
+    public PlayerController(Player player, Map map, Console console, Game game, Simulator simulator) {
         this.player = player;
         this.map = map;
         this.console = console;
         this.game = game;
         this.scanner = new Scanner(System.in);
+        this.simulator = simulator;
     }
 
     public void moveHero(Scanner scanner) {
@@ -95,11 +99,11 @@ public class PlayerController {
                 System.out.println("Нельзя ходить по озеру!");
                 return;
             }
-            if(newTile.getObstacle() == ObstacleType.IMPASSABLE){
+            if (newTile.getObstacle() == ObstacleType.IMPASSABLE) {
                 System.out.println("Препятствие! Прохода нет!");
                 return;
             }
-            if(newTile.getObstacle() == ObstacleType.PENALTY_BLOCK){
+            if (newTile.getObstacle() == ObstacleType.PENALTY_BLOCK) {
                 System.out.println("Препятствие со штрафом! Прохода нет! Ваш штраф: " + MovementCalculator.calculatePenalty(newTile));
                 return;
             }
@@ -109,15 +113,14 @@ public class PlayerController {
             hero.setY(newY);
             newTile.setOccupant(hero);
             canRevive();
-            game.checkCafeProximity();
 
             int penalty = MovementCalculator.calculatePenalty(newTile);
             player.setGold(player.getGold() - penalty);
 
             System.out.println("Герой переместился в (" + newX + ", " + newY + "). Штраф: " + penalty + " золота.");
             balance();
-        }
-        catch (Exception e) {
+            interactNearResorts(simulator);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -137,11 +140,11 @@ public class PlayerController {
                     continue;
                 Tile tile = map.getTiles()[newX][newY];
                 if (tile.getTerrainType() == TerrainType.LAKE) {
-                    if ((player.getHero().getDeadArmy() == null || player.getHero().getDeadArmy().isEmpty()) ) {
+                    if ((player.getHero().getDeadArmy() == null || player.getHero().getDeadArmy().isEmpty())) {
                         System.out.println("Вам некого воскрешать!");
                         GameLogger.logWarning("Пользователь попытался воскресить юнита, хотя у него нет умерших юнитов");
                         return;
-                    }else{
+                    } else {
                         revive();
                         return;
                     }
@@ -156,7 +159,6 @@ public class PlayerController {
         int lucky = new Random().nextInt(2);
         if (lucky == 0) {
             System.out.println("Увы, вам не повезло, приходите в следующий раз!.");
-            return;
         } else if (lucky == 1) {
             System.out.println("Удача сегодня на вашей стороне. Некромант вылез из озера, а вот сможет он вам помочь или не сможет, решит монетка. " +
                     "\nОрел - воскресит, Решка - не воскресит");
@@ -178,5 +180,134 @@ public class PlayerController {
             }
         }
     }
+    public void interactNearResorts(Simulator simulator) {
+        Hero hero = player.getHero();
+        if (hero == null) {
+            System.out.println("У вас нет героя!");
+            return;
+        }
 
+        List<Resort> nearbyResorts = new ArrayList<>();
+        List<int[]> resortCoords = new ArrayList<>();
+
+        for (
+                int dx = -1;
+                dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                if (dx == 0 && dy == 0) continue;
+
+                int x = hero.getX() + dx;
+                int y = hero.getY() + dy;
+
+                if (x < 0 || x >= Constants.MAP_WIDTH || y < 0 || y >= Constants.MAP_HEIGHT)
+                    continue;
+
+                Tile tile = map.getTiles()[x][y];
+                if (tile.getOccupant() instanceof Resort resort) {
+                    nearbyResorts.add(resort);
+                    resortCoords.add(new int[]{x, y});
+                }
+            }
+        }
+
+        if (nearbyResorts.isEmpty()) {
+            System.out.println("Поблизости нет зданий для взаимодействия.");
+            return;
+        }
+
+        System.out.println("Поблизости находятся здания:");
+        for (
+                int i = 0; i < nearbyResorts.size(); i++) {
+            int[] coords = resortCoords.get(i);
+            System.out.println(i + " — " + nearbyResorts.get(i).getName() + " (" + coords[0] + ", " + coords[1] + ")");
+        }
+
+        System.out.print("Хотите взаимодействовать с ближайшим зданием? (да/нет): ");
+        if (!scanner.nextLine().
+
+                trim().
+
+                equalsIgnoreCase("да")) {
+            return;
+        }
+
+        System.out.print("Выберите здание для взаимодействия: ");
+        int choice;
+        try {
+            choice = Integer.parseInt(scanner.nextLine());
+        } catch (
+                NumberFormatException e) {
+            System.out.println("Неверный ввод.");
+            return;
+        }
+
+        if (choice < 0 || choice >= nearbyResorts.size()) {
+            System.out.println("Неверный номер.");
+            return;
+        }
+
+        Resort resort = nearbyResorts.get(choice);
+        List<Service> services = resort.getAvailableServices();
+
+        System.out.println("Доступные услуги:");
+        for (
+                int i = 0; i < services.size(); i++) {
+            System.out.println(i + " — " + services.get(i).getName());
+        }
+
+        System.out.print("Выберите услугу: ");
+        int serviceIndex;
+        try {
+            serviceIndex = Integer.parseInt(scanner.nextLine());
+        } catch (
+                NumberFormatException e) {
+            System.out.println("Неверный ввод.");
+            return;
+        }
+
+        if (serviceIndex < 0 || serviceIndex >= services.size()) {
+            System.out.println("Неверный номер.");
+            return;
+        }
+
+        long now = TimeManager.getCurrentGameTimeMillis();
+        resort.printStatus(now);
+
+        Visitor visitor = new Visitor("Игрок", true, player);
+        resort.update(now);
+
+        if (resort.isAvailable()) {
+            resort.serveVisitor(visitor, services.get(serviceIndex), now);
+            System.out.println("Вы начали " + services.get(serviceIndex).getName() + ". Ожидайте завершения...");
+
+            while (true) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+                if (!resort.isVisitorInside(visitor)) {
+                    System.out.println("Отдых завершён.");
+                    break;
+                }
+            }
+        } else {
+            System.out.println("Все места заняты. Ждёте? (да/нет)");
+            if (scanner.nextLine().trim().equalsIgnoreCase("да")) {
+                System.out.println("Ожидание свободного места...");
+                while (!resort.isAvailable()) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return;
+                    }
+                }
+                resort.serveVisitor(visitor, services.get(serviceIndex), TimeManager.getCurrentGameTimeMillis());
+            } else {
+                System.out.println("Вы отказались от ожидания.");
+            }
+        }
+    }
 }

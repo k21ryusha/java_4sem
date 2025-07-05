@@ -26,7 +26,6 @@ public class Console {
                 if (obstacleSymbol != null && !obstacleSymbol.isEmpty()) {
                     return obstacleSymbol;
                 }
-                return TerrainType.NEUTRAL.getSymbol();
         }
         return tile.getTerrainType().getSymbol();
     }
@@ -34,11 +33,10 @@ public class Console {
 
     public void displayGameMap(Map map) {
         Tile[][] tiles = map.getTiles();
-        System.out.println("\n=== Игровая карта ===");
-        for (int y = 0; y < map.getX(); y++) {
-            for (int x = 0; x < map.getY(); x++) {
-                Tile tile = tiles[x][y];
-                System.out.print(getSymbolForTile(tile) + " ");
+        for (int y = 0; y < map.getY(); y++) {
+            for (int x = 0; x < map.getX(); x++) {
+                String sym = getSymbolForTile(tiles[x][y]);
+                System.out.print(" " + sym + " ");
             }
             System.out.println();
         }

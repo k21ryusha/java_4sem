@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import laba_1.MapController.BattleMap;
 import laba_1.MapController.Map;
 import laba_1.battle.Battle;
+import laba_1.laba_4_buildings.*;
 import laba_1.model.*;
 import laba_1.model.buildings.*;
 import laba_1.model.units.*;
@@ -24,7 +25,7 @@ import static laba_1.util.FileName.generateSaveFileName;
 public class Game {
     private final Scanner scanner = new Scanner(System.in);
     private final Console console;
-    private Map map;
+    private final Map map;
     private boolean testMode = false;
     private static boolean isGameOver = false;
     private static boolean isGameClosed = false;
@@ -36,15 +37,14 @@ public class Game {
     private final String playerName;
     private int turnCounter = 0;
     private int goldEarnedFromKills = 0;
-    private int totalBattleVictories = 0;
+    private final int totalBattleVictories = 0;
     private int battleVictories = 0;
     private long startTimeMillis;
     private int resurrectedUnitsCount = 0;
     private BattleMap bmap;
     private int turnsToVictory = Integer.MAX_VALUE;
-    private Cafe cafe;
-    private final int cafeX = 5;
-    private final int cafeY = 3;
+    private Simulator simulator;
+    private long gameStartTimeMs;
 
 
     public Game(Map map, Console console, String playerName) {
@@ -85,18 +85,20 @@ public class Game {
             botCastle = new Castle(bot, Constants.MAP_WIDTH - 1, Constants.MAP_HEIGHT - 1);
             map.getTiles()[Constants.MAP_WIDTH - 1][Constants.MAP_HEIGHT - 1].setOccupant(botCastle);
         }
-        Tile cafeTile = map.getTiles()[cafeX][cafeY];
-        cafe = new Cafe(cafeX, cafeY);
-        cafeTile.setTerrainType(TerrainType.URBAN);
-        cafeTile.setOccupant(cafe);
-        System.out.println("Кафе «Сырники от тети Глаши» установлено на (" + cafeX + "," + cafeY + ")");
+        Resort hotel = new Hotel();
+        Resort cafe = new Cafe();
+        Resort barbershop = new Barbershop();
+
+        map.getTiles()[5][0].setOccupant(hotel);
+        map.getTiles()[5][3].setOccupant(cafe);
+        map.getTiles()[2][7].setOccupant(barbershop); //
 
         playerCastle.setOwner(player);
         botCastle.setOwner(bot);
         player.setCastle(playerCastle);
         bot.setCastle(botCastle);
-
-        playerController = new PlayerController(player, map, console, this);
+        simulator = new Simulator(player,this,map);
+        playerController = new PlayerController(player, map, console, this,simulator);
         botController = new BotController(bot, map, console);
         bmap = new BattleMap(5, 5);
         battle = new Battle(player, bot, console, bmap, this);
@@ -104,6 +106,19 @@ public class Game {
 
     public void startGame() {
         GameLogger.logInfo("Игра начата");
+        gameStartTimeMs = TimeManager.getCurrentGameTimeMillis();
+        simulator = new Simulator(player, this, map);
+        Thread simulatorThread = new Thread(() -> {
+            try {
+                simulator.startSimulation();
+            } catch (Exception e) {
+                e.printStackTrace();
+                GameLogger.logError("Ошибка в симуляторе: " + e.getMessage());
+            }
+        });
+        simulatorThread.setDaemon(true);
+        simulatorThread.start();
+
         try {
             while (!isGameOver) {
                 startTimeMillis = System.currentTimeMillis();
@@ -111,6 +126,16 @@ public class Game {
                 boolean turnEnded = false;
                 while (!turnEnded && !isGameOver) {
                     console.displayGameMap(map);
+
+                    long nowMs = TimeManager.getCurrentGameTimeMillis();
+                    long elapsedMs = nowMs - gameStartTimeMs;
+                    long elapsedMin = elapsedMs / TimeManager.MILLIS_PER_GAME_MINUTE;
+                    long minutesSince08 = elapsedMin + 8 * 60;
+                    int hours   = (int)((minutesSince08 / 60) % 24);
+                    int minutes = (int)(minutesSince08 % 60);
+                    String timeStr = String.format("%02d:%02d", hours, minutes);
+                    System.out.println("Внутриигровое время: " + timeStr);
+
                     System.out.println("\n=== Главное меню ===");
                     System.out.println("1. Войти в замок (игрок)");
                     System.out.println("2. Совершить ход (переместить героя)");
@@ -156,9 +181,11 @@ public class Game {
                 checkDiscontent();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             GameLogger.logError("Ошибка при запуске игры: " + e.getMessage());
         }
     }
+
 
     public Player getPlayer() {
         return this.player;
@@ -617,6 +644,9 @@ public class Game {
                 record.setTotalTurns(turnCounter);
                 record.setGoldFromKills(goldEarnedFromKills);
                 RecordManager.updateRecord(record);
+                if (simulator != null) {
+                    simulator.stopSimulation();
+                }
                 System.out.println("\n=================================");
                 System.out.println("=== ПОЗДРАВЛЯЕМ С ПОБЕДОЙ! ===");
                 System.out.println("=================================");
@@ -826,7 +856,7 @@ public class Game {
             game.init();
 
             // Настраиваем контроллеры
-            game.playerController = new PlayerController(game.player, gameMap, console, game);
+            game.playerController = new PlayerController(game.player, gameMap, console, game,new Simulator(game.player,game,gameMap));
             game.botController = new BotController(game.bot, gameMap, console);
             game.battle = new Battle(game.player, game.bot, console, new BattleMap(5, 5), game);
 
@@ -838,8 +868,6 @@ public class Game {
             return null;
         }
     }
-
-
         public void addGoldFromKills ( int amount){
             goldEarnedFromKills += amount;
         }
@@ -854,26 +882,8 @@ public class Game {
         return battle;
     }
 
-    private boolean isAdjacentToCafe(Hero hero) {
-        int dx = Math.abs(hero.getX() - cafeX);
-        int dy = Math.abs(hero.getY() - cafeY);
-        return (dx <= 1 && dy <= 1) && !(dx == 0 && dy == 0);
-    }
-
-    void checkCafeProximity() {
-        Hero hero = player.getHero();
-        if (hero != null && isAdjacentToCafe(hero)) {
-            System.out.println("Вы находитесь рядом с кафе «Сырники от тети Глаши». Хотите войти?");
-            System.out.println("1. Да");
-            System.out.println("2. Нет");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-            if (choice == 1) {
-                cafe.tryEnter(player.getName(), null);  // null – случайная услуга
-            } else {
-                System.out.println("Вы решили не заходить в кафе.");
-            }
-        }
+    public long getGameStartTimeMs() {
+        return gameStartTimeMs;
     }
 }
 

@@ -38,7 +38,7 @@ class BattleMapDisplayTest {
             String output = outputStream.toString();
 
             long dotCount = output.chars().filter(ch -> ch == '・').count();
-            assertEquals(battleMap.getWidth() * battleMap.getHeight(), dotCount,
+            assertEquals((long) battleMap.getWidth() * battleMap.getHeight(), dotCount,
                     "Пустая карта должна содержать только точки");
         }
 

@@ -19,8 +19,8 @@ public class Battle {
     public BattleMap bmap;
     private final Console console;
     private Scanner scanner = new Scanner(System.in);
-    private Game game;
-    private Map map;
+    private final Game game;
+    private final Map map;
     private boolean isFinalBattle = false;
 
     public Battle(Player player, Player bot, Console console, BattleMap map, Game game) {
@@ -125,7 +125,7 @@ public class Battle {
         System.out.println("Выберите юнита для перемещения (введите координаты x y):");
         int x = scanner.nextInt();
         int y = scanner.nextInt();
-        scanner.nextLine(); // Очистка буфера
+        scanner.nextLine();
         BattleTile tile = bmap.getTiles()[x][y];
         if (tile.getOccupant() instanceof Unit unit && unit.getOwner() == player) {
             System.out.println("Выберите направление для перемещения ():");
@@ -364,10 +364,10 @@ public class Battle {
             }
         }
 
-        if (!playerHasUnits) {;
+        if (!playerHasUnits) {
             return true;
 
-        } else if (!botHasUnits) {;
+        } else if (!botHasUnits) {
             return true;
         }
         return false;

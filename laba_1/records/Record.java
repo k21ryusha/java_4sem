@@ -1,7 +1,7 @@
 package laba_1.records;
 
 public class Record {
-    private String playerName;
+    private final String playerName;
     private int mostGoldFromKills = 0;
     private int resurrectedUnits = 0;
     private int battleVictories = 0;
