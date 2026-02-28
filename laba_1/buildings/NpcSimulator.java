@@ -1,4 +1,4 @@
-package laba_1.laba_4_buildings;
+package laba_1.buildings;
 
 import java.util.List;
 import java.util.Random;
@@ -18,20 +18,20 @@ public class NpcSimulator implements Runnable {
     public void run() {
         while (running) {
             long now = TimeManager.getCurrentGameTimeMillis();
-
-            // Обновляем состояние всех зданий
             for (Resort resort : resorts) {
                 resort.update(now);
             }
 
-            for (Visitor npc : visitors) {
-                if (!npc.isPlayer() && !isInAnyResort(npc) && random.nextDouble() < 0.3) {
-                    Resort resort = resorts.get(random.nextInt(resorts.size()));
-                    List<Service> services = resort.getAvailableServices();
-                    if (!services.isEmpty()) {
-                        Service service = services.get(random.nextInt(services.size()));
-                        if (resort.isAvailable()) {
-                            resort.serveVisitor(npc, service, now);
+            if (!resorts.isEmpty()) {
+                for (Visitor npc : visitors) {
+                    if (!npc.isPlayer() && !isInAnyResort(npc) && random.nextDouble() < 0.3) {
+                        Resort resort = resorts.get(random.nextInt(resorts.size()));
+                        List<Service> services = resort.getAvailableServices();
+                        if (!services.isEmpty()) {
+                            Service service = services.get(random.nextInt(services.size()));
+                            if (resort.isAvailable()) {
+                                resort.serveVisitor(npc, service, now);
+                            }
                         }
                     }
                 }

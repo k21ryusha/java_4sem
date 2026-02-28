@@ -1,66 +1,18 @@
 {
-  "Кирилл": {
-    "playerName": "Кирилл",
-    "mostGoldFromKills": 1500,
-    "resurrectedUnits": 3,
-    "battleVictories": 3,
-    "totalTurns": 4,
-    "timeToVictoryMillis": 4634
-  },
-  "Ботик": {
-    "playerName": "Ботик",
-    "mostGoldFromKills": 0,
-    "resurrectedUnits": 1,
-    "battleVictories": 1,
-    "totalTurns": 3,
-    "timeToVictoryMillis": 134772
-  },
-  "БОтяра": {
-    "playerName": "БОтяра",
-    "mostGoldFromKills": 0,
-    "resurrectedUnits": 1,
-    "battleVictories": 1,
-    "totalTurns": 1,
-    "timeToVictoryMillis": 2661
-  },
-  "пп": {
-    "playerName": "пп",
-    "mostGoldFromKills": 0,
-    "resurrectedUnits": 1,
-    "battleVictories": 1,
-    "totalTurns": 5,
-    "timeToVictoryMillis": 11910
-  },
-  "рр": {
-    "playerName": "рр",
-    "mostGoldFromKills": 0,
-    "resurrectedUnits": 5,
-    "battleVictories": 6,
-    "totalTurns": 1,
-    "timeToVictoryMillis": 2926
-  },
-  "Кири": {
-    "playerName": "Кири",
-    "mostGoldFromKills": 1750,
-    "resurrectedUnits": 1,
-    "battleVictories": 1,
-    "totalTurns": 3,
-    "timeToVictoryMillis": 45390
-  },
-  "МЕССИ": {
-    "playerName": "МЕССИ",
-    "mostGoldFromKills": 3500,
+  "бууум": {
+    "playerName": "бууум",
+    "mostGoldFromKills": 3000,
     "resurrectedUnits": 0,
     "battleVictories": 1,
-    "totalTurns": 5,
-    "timeToVictoryMillis": 11337
+    "totalTurns": 12,
+    "timeToVictoryMillis": 170195
   },
   "Игрок": {
     "playerName": "Игрок",
     "mostGoldFromKills": 0,
     "resurrectedUnits": 0,
-    "battleVictories": 82,
+    "battleVictories": 0,
     "totalTurns": 0,
-    "timeToVictoryMillis": 1748674401545
+    "timeToVictoryMillis": 1772242362565
   }
 }

@@ -19,7 +19,8 @@ public class RecordManager {
 
         try (Reader reader = new FileReader(file)) {
             Type type = new TypeToken<Map<String, Record>>() {}.getType();
-            return gson.fromJson(reader, type);
+            Map<String, Record> loaded = gson.fromJson(reader, type);
+            return loaded != null ? loaded : new HashMap<>();
         } catch (IOException e) {
             System.out.println("Ошибка чтения расширенных рекордов: " + e.getMessage());
             return new HashMap<>();
@@ -41,12 +42,12 @@ public class RecordManager {
         Map<String, Record> records = loadRecords();
         Record current = records.getOrDefault(newStats.getPlayerName(), new Record(newStats.getPlayerName()));
 
-        if (newStats.getTotalTurns() < current.getTotalTurns() || current.getTotalTurns() == 0) {
+        if (newStats.getTotalTurns() > 0 && (current.getTotalTurns() == 0 || newStats.getTotalTurns() < current.getTotalTurns())) {
             current.setTotalTurns(newStats.getTotalTurns());
         }
 
         if (newStats.getMostGoldFromKills() > current.getMostGoldFromKills()) {
-            current.addGoldFromKills(newStats.getMostGoldFromKills());
+            current.setGoldFromKills(newStats.getMostGoldFromKills());
         }
 
         if (newStats.getTimeToVictoryMillis() > 0 &&
@@ -54,10 +55,12 @@ public class RecordManager {
             current.setTimeToVictoryMillis(newStats.getTimeToVictoryMillis());
         }
 
-        current.incrementBattleVictories();
+        if (newStats.getBattleVictories() > 0) {
+            current.setBattleVictories(current.getBattleVictories() + newStats.getBattleVictories());
+        }
 
         if (newStats.getResurrectedUnits() > current.getResurrectedUnits()) {
-            current.getResurrectedUnits();
+            current.setResurrectedUnitsCount(newStats.getResurrectedUnits());
         }
 
         records.put(current.getPlayerName(), current);

@@ -28,15 +28,12 @@ public class BattleTest {
 
     @BeforeEach
     void setUp() {
-        // Создаём карту
         map = new Map(Constants.MAP_WIDTH, Constants.MAP_HEIGHT);
         console = new Console();
 
-        // Игроки
         player = new Player("Player", 1000);
         bot = new Player("Bot", 1000);
 
-        // Замки
         Castle playerCastle = new Castle(player, 0, 0);
         Castle botCastle = new Castle(bot, Constants.MAP_WIDTH - 1, Constants.MAP_HEIGHT - 1);
         map.getTiles()[0][0].setOccupant(playerCastle);
@@ -44,7 +41,6 @@ public class BattleTest {
         player.setCastle(playerCastle);
         bot.setCastle(botCastle);
 
-        // Герои
         Hero playerHero = new Hero("PlayerHero", 1, 0, player);
         Hero botHero = new Hero("BotHero", Constants.MAP_WIDTH - 2, Constants.MAP_HEIGHT - 1, bot);
         map.getTiles()[1][0].setOccupant(playerHero);
@@ -151,7 +147,7 @@ public class BattleTest {
 
         battle.bmap = testMap;
 
-        String simulatedInput = "2 2\n4\n";  // Перемещение вправо
+        String simulatedInput = "2 2\n4\n";
         InputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         Scanner testScanner = new Scanner(inputStream);
 

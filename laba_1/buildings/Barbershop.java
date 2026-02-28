@@ -1,4 +1,4 @@
-package laba_1.laba_4_buildings;
+package laba_1.buildings;
 
 import laba_1.model.units.Unit;
 

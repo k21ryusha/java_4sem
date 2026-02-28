@@ -1,4 +1,4 @@
-package laba_1.laba_4_buildings;
+package laba_1.buildings;
 
 import laba_1.MapController.Map;
 import laba_1.editor.MapEditor;
@@ -9,7 +9,6 @@ import laba_1.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 
 public class Simulator {

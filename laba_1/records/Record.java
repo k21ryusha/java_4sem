@@ -35,6 +35,11 @@ public class Record {
         this.battleVictories++;
     }
 
+    public void setBattleVictories(int battleVictories) {
+        this.battleVictories = battleVictories;
+    }
+
+
     public void setTotalTurns(int totalTurns) {
         this.totalTurns = totalTurns;
     }

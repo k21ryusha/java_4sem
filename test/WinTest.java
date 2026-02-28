@@ -75,6 +75,26 @@ class WinTest {
     }
 
     @Test
+    void testBotDefeatWhenGoldExistsButNoPurchasableUnits() {
+        Player bot = game.getBot();
+
+        Hero botHero = new Hero("BotHero", Constants.MAP_WIDTH - 1, Constants.MAP_HEIGHT - 1, bot);
+        bot.setHero(botHero);
+        botHero.getArmy().clear();
+
+        Castle botCastle = bot.getCastle();
+        botCastle.getBuildings().clear();
+        botCastle.addBuilding(new laba_1.model.buildings.Cathedral());
+
+        bot.setGold(175);
+
+        game.checkVictoryConditions();
+
+        assertTrue(Game.isGameOver(), "Игра должна завершиться, если бот не может купить ни одного юнита");
+    }
+
+
+    @Test
     void testPlayerDefeatDueToGoldAndEmptyArmy() {
         Player player = game.getPlayer();
         Hero hero = new Hero("Test", 1, 1, player);

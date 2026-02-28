@@ -1,7 +1,6 @@
 package laba_1.MapController;
 
-import laba_1.editor.MapEditor;
-import laba_1.laba_4_buildings.TimeManager;
+import laba_1.buildings.TimeManager;
 import laba_1.model.ObstacleType;
 import laba_1.model.TerrainType;
 import laba_1.model.Tile;
@@ -15,7 +14,7 @@ public class Map implements Serializable {
     private final int y;
     private Tile[][] tiles;
     private String name;
-    private int INITIAL_GAME_HOUR = 8;
+    private final int INITIAL_GAME_HOUR = 8;
 
     public Map(int x, int y) {
         this.x = x;

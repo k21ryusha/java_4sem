@@ -3,9 +3,9 @@ package laba_1.editor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import laba_1.MapController.Map;
-import laba_1.laba_4_buildings.Barbershop;
-import laba_1.laba_4_buildings.Cafe;
-import laba_1.laba_4_buildings.Hotel;
+import laba_1.buildings.Barbershop;
+import laba_1.buildings.Cafe;
+import laba_1.buildings.Hotel;
 import laba_1.model.ObstacleType;
 import laba_1.model.buildings.Castle;
 import laba_1.model.TerrainType;
@@ -196,7 +196,7 @@ public class MapEditor {
 
 
     public static void saveMapToFile(String name, Map map) {
-        saveVisualMap(map.getName(), map);
+        saveVisualMap(name, map);
     }
 
     public static void saveVisualMap(String name, Map map) {

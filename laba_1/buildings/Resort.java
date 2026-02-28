@@ -1,4 +1,4 @@
-package laba_1.laba_4_buildings;
+package laba_1.buildings;
 
 
 import laba_1.model.Occupant;
@@ -21,8 +21,20 @@ public abstract class Resort implements Occupant {
             this.service = service;
         }
     }
+    private static class QueueEntry {
+        Visitor visitor;
+        Service service;
+        long requestTimeMillis;
+
+        QueueEntry(Visitor visitor, Service service, long requestTimeMillis) {
+            this.visitor = visitor;
+            this.service = service;
+            this.requestTimeMillis = requestTimeMillis;
+        }
+    }
 
     protected final Map<Visitor, VisitInfo> activeVisitors = new HashMap<>();
+    private final java.util.Deque<QueueEntry> waitingQueue = new java.util.ArrayDeque<>();
 
     public Resort(String name, int capacity) {
         this.name = name;
@@ -31,15 +43,36 @@ public abstract class Resort implements Occupant {
 
     public abstract List<Service> getAvailableServices();
 
-    public boolean isAvailable() {
+    public synchronized boolean isAvailable() {
         return activeVisitors.size() < capacity;
     }
 
     public synchronized void serveVisitor(Visitor visitor, Service service, long currentTimeMillis) {
-        if (isAvailable() && !activeVisitors.containsKey(visitor)) {
+        if (isAvailable() && !activeVisitors.containsKey(visitor)&& !isVisitorQueued(visitor)) {
             long endTime = currentTimeMillis + service.getDurationMinutes() * TimeManager.MILLIS_PER_GAME_MINUTE;
             activeVisitors.put(visitor, new VisitInfo(endTime, service));
         }
+    }
+
+    public synchronized boolean enqueueVisitor(Visitor visitor, Service service, long currentTimeMillis) {
+        if (activeVisitors.containsKey(visitor) || isVisitorQueued(visitor)) {
+            return false;
+        }
+        waitingQueue.addLast(new QueueEntry(visitor, service, currentTimeMillis));
+        return true;
+    }
+
+    public synchronized boolean isVisitorQueued(Visitor visitor) {
+        for (QueueEntry entry : waitingQueue) {
+            if (entry.visitor.equals(visitor)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public synchronized int getQueueSize() {
+        return waitingQueue.size();
     }
     public synchronized void update(long currentTimeMillis) {
         List<Visitor> completed = new ArrayList<>();
@@ -55,6 +88,15 @@ public abstract class Resort implements Occupant {
             if (visitor.isPlayer()) {
                 System.out.println(visitor.getName() + " завершил " + info.service.getName() + " в " + name);
                 info.service.applyBonus(visitor.getLinkedPlayer());
+            }
+        }
+
+        while (isAvailable() && !waitingQueue.isEmpty()) {
+            QueueEntry next = waitingQueue.removeFirst();
+            long endTime = currentTimeMillis + next.service.getDurationMinutes() * TimeManager.MILLIS_PER_GAME_MINUTE;
+            activeVisitors.put(next.visitor, new VisitInfo(endTime, next.service));
+            if (next.visitor.isPlayer()) {
+                System.out.println(next.visitor.getName() + " занял место в " + name + " из очереди.");
             }
         }
     }
@@ -77,12 +119,16 @@ public abstract class Resort implements Occupant {
         if (!anyoneActive) {
             System.out.println("Все свободны.");
         }
+
+        if (!waitingQueue.isEmpty()) {
+            System.out.println("В очереди: " + waitingQueue.size());
+        }
     }
 
     public String getName() {
         return name;
     }
-    public boolean isVisitorInside(Visitor visitor) {
+    public synchronized boolean isVisitorInside(Visitor visitor) {
         return activeVisitors.containsKey(visitor);
     }
 }

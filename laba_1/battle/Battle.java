@@ -187,8 +187,21 @@ public class Battle {
             } else {
                 System.out.println("Невозможно выйти за пределы карты.");
             }
+            attackFirstEnemyInRange(unit);
         } else {
             System.out.println("Выбранная клетка не содержит вашего юнита.");
+        }
+    }
+
+    private void attackFirstEnemyInRange(Unit unit) {
+        for (int i = 0; i < bmap.getWidth(); i++) {
+            for (int j = 0; j < bmap.getHeight(); j++) {
+                BattleTile target = bmap.getTiles()[i][j];
+                if (target.getOccupant() instanceof Unit enemy && enemy.getOwner() != unit.getOwner() && isInRange(unit, enemy)) {
+                    attackUnit(unit, enemy, target);
+                    return;
+                }
+            }
         }
     }
 

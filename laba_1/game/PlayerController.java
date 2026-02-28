@@ -1,7 +1,7 @@
 package laba_1.game;
 
 import laba_1.MapController.Map;
-import laba_1.laba_4_buildings.*;
+import laba_1.buildings.*;
 import laba_1.model.*;
 import laba_1.model.units.Unit;
 import laba_1.util.Constants;
@@ -180,6 +180,7 @@ public class PlayerController {
             }
         }
     }
+
     public void interactNearResorts(Simulator simulator) {
         Hero hero = player.getHero();
         if (hero == null) {
@@ -282,11 +283,12 @@ public class PlayerController {
 
             while (true) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     return;
                 }
+                resort.update(TimeManager.getCurrentGameTimeMillis());
                 if (!resort.isVisitorInside(visitor)) {
                     System.out.println("Отдых завершён.");
                     break;
@@ -295,19 +297,35 @@ public class PlayerController {
         } else {
             System.out.println("Все места заняты. Ждёте? (да/нет)");
             if (scanner.nextLine().trim().equalsIgnoreCase("да")) {
-                System.out.println("Ожидание свободного места...");
-                while (!resort.isAvailable()) {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        return;
-                    }
+                boolean queued = resort.enqueueVisitor(visitor, services.get(serviceIndex), TimeManager.getCurrentGameTimeMillis());
+                if (!queued) {
+                    System.out.println("Не удалось добавить вас в очередь.");
                 }
-                resort.serveVisitor(visitor, services.get(serviceIndex), TimeManager.getCurrentGameTimeMillis());
-            } else {
-                System.out.println("Вы отказались от ожидания.");
+            System.out.println("Вы встали в очередь. Ожидайте освобождения места...");
+            while (resort.isVisitorQueued(visitor)) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+                resort.update(TimeManager.getCurrentGameTimeMillis());
+            }
+            System.out.println("Для вас освободилось место. Услуга началась...");
+            while (resort.isVisitorInside(visitor)) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+                resort.update(TimeManager.getCurrentGameTimeMillis());
+            }
+            System.out.println("Услуга оказана.");
+        } else{
+            System.out.println("Вы отказались от ожидания.");
             }
         }
     }
 }
+

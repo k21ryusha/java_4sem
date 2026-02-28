@@ -64,17 +64,17 @@ public class Main {
                     Game game = new Game(selectedMap, console,playerName);
                     game.startGame();
                     break;
-                    case 3:
-                        Game loadedGame = Game.loadSavedGame(playerName);
-                        if (loadedGame != null) {
-                            loadedGame.startGame();
-                        } else {
-                            System.out.println("Сохранение по вашему имени не найдено или повреждено.");
-                            break;
-                        }
-                        case 4:
-                            RecordManager.showRecords();
-                            break;
+                case 3:
+                    Game loadedGame = Game.loadSavedGame(playerName);
+                    if (loadedGame != null) {
+                        loadedGame.startGame();
+                    } else {
+                        System.out.println("Сохранение по вашему имени не найдено или повреждено.");
+                    }
+                    break;
+                case 4:
+                    RecordManager.showRecords();
+                    break;
                 case 0:
                     System.out.println("Выход из программы.");
                     return;

@@ -3,7 +3,7 @@ package test;
 import laba_1.MapController.Map;
 import laba_1.game.Game;
 import laba_1.game.PlayerController;
-import laba_1.laba_4_buildings.Simulator;
+import laba_1.buildings.Simulator;
 import laba_1.model.Hero;
 import laba_1.model.Player;
 import laba_1.model.TerrainType;

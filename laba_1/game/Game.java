@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import laba_1.MapController.BattleMap;
 import laba_1.MapController.Map;
 import laba_1.battle.Battle;
-import laba_1.laba_4_buildings.*;
+import laba_1.buildings.*;
 import laba_1.model.*;
 import laba_1.model.buildings.*;
 import laba_1.model.units.*;
@@ -526,14 +526,47 @@ public class Game {
         Hero hero = p.getHero();
         boolean noHero = hero == null;
         boolean noArmy = hero == null || hero.getArmy() == null || hero.getArmy().isEmpty();
-        boolean insufficientGold = p.getGold() < 100;
+        boolean cannotBuyAnyUnit = !canBuyAnyUnit(p);
 
-        return noHero || (noArmy && insufficientGold);
+        return noHero || (noArmy && cannotBuyAnyUnit);
+    }
+
+    private boolean canBuyAnyUnit(Player p) {
+        Castle castle = p.getCastle();
+        Hero hero = p.getHero();
+
+        if (castle == null || hero == null) {
+            return false;
+        }
+
+        int minRequiredGold = Integer.MAX_VALUE;
+
+        Spearman spearman = new Spearman(p);
+        minRequiredGold = Math.min(minRequiredGold,
+                (castle.hasBuilding(Watchtower.class) ? 0 : new Watchtower().getCost()) + spearman.getCost());
+
+        Crossbowman crossbowman = new Crossbowman(p);
+        minRequiredGold = Math.min(minRequiredGold,
+                (castle.hasBuilding(CrossbowTower.class) ? 0 : new CrossbowTower().getCost()) + crossbowman.getCost());
+
+        Swordsman swordsman = new Swordsman(p);
+        minRequiredGold = Math.min(minRequiredGold,
+                (castle.hasBuilding(Armory.class) ? 0 : new Armory().getCost()) + swordsman.getCost());
+
+        Cavalry cavalry = new Cavalry(p);
+        minRequiredGold = Math.min(minRequiredGold,
+                (castle.hasBuilding(Arena.class) ? 0 : new Arena().getCost()) + cavalry.getCost());
+
+        Paladin paladin = new Paladin(p);
+        minRequiredGold = Math.min(minRequiredGold,
+                (castle.hasBuilding(Cathedral.class) ? 0 : new Cathedral().getCost()) + paladin.getCost());
+
+        return p.getGold() >= minRequiredGold;
     }
 
 
     public void endGameFor(Player defeatedPlayer) {
-        if (isGameOver) return; // <- Сначала проверяем, чтобы ничего не делать, если уже завершена
+        if (isGameOver) return;
 
         Game.setGameOver(true);
         isGameOver = true;
@@ -542,24 +575,13 @@ public class Game {
             System.out.println("Вы проиграли! Игра окончена.");
             endGame(false);
         } else {
-            boolean botCompletelyDefeated =
-                    bot.getHero() == null ||
-                            (bot.getHero().getArmy() == null || bot.getHero().getArmy().isEmpty()) &&
-                                    bot.getGold() < 100;
-
+            boolean botCompletelyDefeated = isPlayerDefeated(bot);
             if (botCompletelyDefeated || bot.getCastle() == null) {
                 System.out.println("Поздравляем! Вы победили.");
                 endGame(true);
-
-                Record record = new Record(player.getName());
-                record.setTotalTurns(turnCounter);
-                record.incrementBattleVictories();
-                record.setGoldFromKills(goldEarnedFromKills);
-                record.setResurrectedUnitsCount(resurrectedUnitsCount);
                 if (turnCounter < turnsToVictory) {
                     turnsToVictory = turnCounter;
                 }
-                RecordManager.updateRecord(record);
             } else {
                 System.out.println("Вы победили в битве! Юниты противника уничтожены.");
             }
@@ -602,13 +624,11 @@ public class Game {
         Hero playerHero = player.getHero();
         Hero botHero = bot.getHero();
 
-        // Если у кого-то нет героя - не проверяем встречи
         if (playerHero == null || botHero == null) return;
 
-        // Проверка финальной битвы (атака на замок)
         if (isAdjacentEnemyCastle(playerHero, botHero)) {
             battle.startFinalBattle();
-            return; // Важно: выходим после битвы
+            return;
         }
 
         if (playerHero.getArmy() == null || playerHero.getArmy().isEmpty()) return;
@@ -639,10 +659,13 @@ public class Game {
         if (isGameOver) {
             if (playerWon) {
                 Record record = new Record(player.getName());
-                long timeElapsed = System.currentTimeMillis() - startTimeMillis;
+                long baseStartTime = gameStartTimeMs > 0 ? gameStartTimeMs : startTimeMillis;
+                long timeElapsed = Math.max(0, System.currentTimeMillis() - baseStartTime);
                 record.setTimeToVictoryMillis(timeElapsed);
                 record.setTotalTurns(turnCounter);
                 record.setGoldFromKills(goldEarnedFromKills);
+                record.setResurrectedUnitsCount(resurrectedUnitsCount);
+                record.setBattleVictories(battleVictories);
                 RecordManager.updateRecord(record);
                 if (simulator != null) {
                     simulator.stopSimulation();
